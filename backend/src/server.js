@@ -104,8 +104,9 @@ app.get("/", (req, res) => {
  */
 app.use("/api/auth", require("./routes/authRoutes"));
 
-// Future routes (Day 3+):
-//   app.use("/api/tasks", require("./routes/taskRoutes"));
+app.use("/api/tasks", require("./routes/taskRoutes"));
+
+// Future routes:
 //   app.use("/api/boards", require("./routes/boardRoutes"));
 
 // ------------------------------------------
