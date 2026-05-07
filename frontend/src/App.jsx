@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Toaster } from "react-hot-toast";
 
 // Components
-import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./components/DashboardLayout";
 
 // Pages
 import Login from "./pages/Login";
@@ -23,11 +23,12 @@ const App = () => {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "#1e293b",
-            color: "#f1f5f9",
-            border: "1px solid rgba(99, 102, 241, 0.2)",
-            borderRadius: "12px",
+            background: "#fff",
+            color: "#0F172A",
+            border: "1px solid #e2e8f0",
+            borderRadius: "8px",
             fontSize: "14px",
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
           },
           success: {
             iconTheme: { primary: "#22c55e", secondary: "#fff" },
@@ -37,9 +38,6 @@ const App = () => {
           },
         }}
       />
-
-      {/* Navbar (always visible) */}
-      <Navbar />
 
       {/* Page Routes */}
       <Routes>
@@ -52,7 +50,9 @@ const App = () => {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
             </ProtectedRoute>
           }
         />

@@ -1,30 +1,10 @@
 // ==============================================
 // TaskForm Component - Create / Edit Task Form
 // ==============================================
-// A controlled form component used for both
-// creating new tasks and editing existing ones.
-//
-// Props:
-//   - onSubmit     : function(taskData) → called on form submit
-//   - initialData  : object → pre-fills form when editing (null for create)
-//   - isLoading    : boolean → disables submit button while saving
-//   - onCancel     : function → called when Cancel button is clicked
-//
-// HOW IT WORKS:
-//   - If initialData is provided, the form starts
-//     pre-filled (edit mode).
-//   - If initialData is null/undefined, the form
-//     starts empty (create mode).
-//   - The parent component handles the API call;
-//     this form only collects and validates data.
-// ==============================================
 
 import { useState, useEffect } from "react";
 
 const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel }) => {
-  // ------------------------------------------
-  // FORM STATE
-  // ------------------------------------------
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -33,12 +13,6 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
     dueDate: "",
   });
 
-  // ------------------------------------------
-  // PRE-FILL FORM FOR EDITING
-  // ------------------------------------------
-  // When initialData changes (e.g., user clicks
-  // "edit" on a different task), update the form
-  // fields with the existing task data.
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -46,13 +20,11 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
         description: initialData.description || "",
         priority: initialData.priority || "medium",
         status: initialData.status || "todo",
-        // Format the date for the HTML date input (YYYY-MM-DD)
         dueDate: initialData.dueDate
           ? new Date(initialData.dueDate).toISOString().split("T")[0]
           : "",
       });
     } else {
-      // Reset form when switching to create mode
       setFormData({
         title: "",
         description: "",
@@ -63,9 +35,6 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
     }
   }, [initialData]);
 
-  // ------------------------------------------
-  // HANDLE INPUT CHANGES
-  // ------------------------------------------
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -74,13 +43,8 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
     }));
   };
 
-  // ------------------------------------------
-  // HANDLE FORM SUBMIT
-  // ------------------------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Build the payload — only include dueDate if set
     const payload = {
       title: formData.title.trim(),
       description: formData.description.trim(),
@@ -97,20 +61,14 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
     onSubmit(payload);
   };
 
-  // ------------------------------------------
-  // DETERMINE MODE (Create vs Edit)
-  // ------------------------------------------
   const isEditMode = !!initialData;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* ---- Title Input ---- */}
       <div>
-        <label
-          htmlFor="task-title"
-          className="block text-sm font-medium text-slate-300 mb-1.5"
-        >
-          Title <span className="text-red-400">*</span>
+        <label htmlFor="task-title" className="block text-sm font-medium text-[#0F172A] mb-1.5">
+          Title <span className="text-[#EF4444]">*</span>
         </label>
         <input
           id="task-title"
@@ -121,16 +79,13 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
           required
           maxLength={100}
           placeholder="e.g., Build Kanban Board UI"
-          className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+          className="input-field"
         />
       </div>
 
       {/* ---- Description Textarea ---- */}
       <div>
-        <label
-          htmlFor="task-description"
-          className="block text-sm font-medium text-slate-300 mb-1.5"
-        >
+        <label htmlFor="task-description" className="block text-sm font-medium text-[#0F172A] mb-1.5">
           Description
         </label>
         <textarea
@@ -141,7 +96,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
           maxLength={500}
           rows={3}
           placeholder="Add task details..."
-          className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
+          className="input-field resize-none"
         />
       </div>
 
@@ -149,10 +104,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Priority Select */}
         <div>
-          <label
-            htmlFor="task-priority"
-            className="block text-sm font-medium text-slate-300 mb-1.5"
-          >
+          <label htmlFor="task-priority" className="block text-sm font-medium text-[#0F172A] mb-1.5">
             Priority
           </label>
           <select
@@ -160,7 +112,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
             name="priority"
             value={formData.priority}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-xl text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all cursor-pointer"
+            className="input-field cursor-pointer"
           >
             <option value="low">🟢 Low</option>
             <option value="medium">🟡 Medium</option>
@@ -170,10 +122,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
 
         {/* Status Select */}
         <div>
-          <label
-            htmlFor="task-status"
-            className="block text-sm font-medium text-slate-300 mb-1.5"
-          >
+          <label htmlFor="task-status" className="block text-sm font-medium text-[#0F172A] mb-1.5">
             Status
           </label>
           <select
@@ -181,21 +130,18 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-xl text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all cursor-pointer"
+            className="input-field cursor-pointer"
           >
             <option value="todo">📋 To Do</option>
             <option value="in-progress">🔄 In Progress</option>
-            <option value="done">✅ Done</option>
+            <option value="done">✅ Review</option>
           </select>
         </div>
       </div>
 
       {/* ---- Due Date Input ---- */}
       <div>
-        <label
-          htmlFor="task-due-date"
-          className="block text-sm font-medium text-slate-300 mb-1.5"
-        >
+        <label htmlFor="task-due-date" className="block text-sm font-medium text-[#0F172A] mb-1.5">
           Due Date
         </label>
         <input
@@ -204,23 +150,23 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
           name="dueDate"
           value={formData.dueDate}
           onChange={handleChange}
-          className="w-full px-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-xl text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+          className="input-field"
         />
       </div>
 
       {/* ---- Action Buttons ---- */}
-      <div className="flex items-center justify-end gap-3 pt-2">
+      <div className="flex items-center justify-end gap-3 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="px-5 py-2.5 text-sm font-medium text-slate-300 bg-slate-700/50 hover:bg-slate-600/50 rounded-xl border border-slate-600 transition-all cursor-pointer"
+          className="px-4 py-2.5 text-sm font-medium text-[#64728B] bg-white hover:bg-[#F8FAFC] rounded-lg border border-[#E2E8F0] transition-colors"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isLoading || !formData.title.trim()}
-          className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-600 hover:to-cyan-600 rounded-xl transition-all hover:shadow-lg hover:shadow-indigo-500/25 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="px-5 py-2.5 text-sm font-medium text-white bg-[#6161FF] hover:bg-[#4F46E5] rounded-lg transition-colors shadow-sm disabled:opacity-50"
         >
           {isLoading
             ? "Saving..."

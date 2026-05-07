@@ -59,15 +59,15 @@ const TaskModal = ({ isOpen, onClose, title, children }) => {
           MODAL CARD
           ------------------------------------------ */}
       <div
-        className="modal-card"
+        className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl border border-[#E2E8F0] transform transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">{title}</h2>
+          <h2 className="text-xl font-bold text-[#0F172A]">{title}</h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-[#64728B] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors cursor-pointer"
             aria-label="Close modal"
           >
             {/* X icon */}
