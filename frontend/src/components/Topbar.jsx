@@ -48,9 +48,9 @@ const Topbar = () => {
 
         {/* User Profile */}
         {user ? (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#6161FF] to-[#FF00D9] text-white flex items-center justify-center font-semibold text-sm cursor-pointer shadow-sm">
-            {user.name.charAt(0).toUpperCase()}
-          </div>
+          <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden bg-slate-200 border border-slate-300 cursor-pointer shadow-sm hover:opacity-90 transition-opacity">
+             <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt={user.name} className="w-full h-full object-cover" />
+          </Link>
         ) : (
           <Link to="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900">Login</Link>
         )}

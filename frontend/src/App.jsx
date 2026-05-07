@@ -13,6 +13,9 @@ import DashboardLayout from "./components/DashboardLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import TaskDetails from "./pages/TaskDetails";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 const App = () => {
   return (
@@ -52,6 +55,36 @@ const App = () => {
             <ProtectedRoute>
               <DashboardLayout>
                 <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/task/:id"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <TaskDetails />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Profile />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Settings />
               </DashboardLayout>
             </ProtectedRoute>
           }
