@@ -66,14 +66,22 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // CORS setup for local development and deployed frontend
-const allowedOrigins = process.env.FRONTEND_URL 
-  ? [process.env.FRONTEND_URL, "http://localhost:3000"] 
-  : "*";
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173"
+];
 
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+// Security: Prevent wildcard with credentials and avoid callback crashes
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 
@@ -144,6 +152,7 @@ app.use(errorHandler);
 // ------------------------------------------
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Railway requirement: explicitly bind to 0.0.0.0
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
