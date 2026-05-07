@@ -80,7 +80,7 @@ npm start
 
 ```
 MongoDB Connected: cluster0-shard-00-xx.bohz4mg.mongodb.net
-Server running on port 5000
+SERVER STARTED ON PORT 3000
 ```
 
 ---
@@ -117,7 +117,7 @@ Server running on port 5000
 | Variable    | Description                    | Example                     |
 | ----------- | ------------------------------ | --------------------------- |
 | `NODE_ENV`  | App environment                | `development`               |
-| `PORT`      | Server port                    | `5000`                      |
+| `PORT`      | Server port                    | (dynamic)                   |
 | `MONGO_URI` | MongoDB Atlas connection string| `mongodb+srv://...`         |
 | `JWT_SECRET`| Secret key for JWT signing     | `your_secret_key_here`      |
 

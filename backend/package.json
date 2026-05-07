@@ -4,9 +4,7 @@
   "description": "Production-quality Task Management API - TEYZIX Internship",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js"
   },
   "keywords": [
     "taskmanager",
