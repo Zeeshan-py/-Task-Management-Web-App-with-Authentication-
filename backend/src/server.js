@@ -72,7 +72,9 @@ const allowedOrigins = [
 ];
 
 if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL);
+  // Strip trailing slash if present to avoid CORS mismatch
+  const cleanUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
+  allowedOrigins.push(cleanUrl);
 }
 
 // Security: Prevent wildcard with credentials and avoid callback crashes
@@ -152,7 +154,8 @@ app.use(errorHandler);
 // ------------------------------------------
 const PORT = process.env.PORT || 5000;
 
-// Railway requirement: explicitly bind to 0.0.0.0
-app.listen(PORT, "0.0.0.0", () => {
+// Start server - intentionally omitting host binding to allow both IPv4 and IPv6 
+// (Railway internal network might route via IPv6, causing 502 if locked to 0.0.0.0)
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
