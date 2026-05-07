@@ -2,25 +2,27 @@
 // TaskCard Component - Individual Task Display
 // ==============================================
 // Renders a single task as a card inside a Kanban
-// column. Displays:
+// column. Now supports drag-and-drop via the
+// isDragging prop from @hello-pangea/dnd.
+//
+// Displays:
 //   - Title
 //   - Description (truncated)
 //   - Priority badge (color-coded)
 //   - Due date (with overdue warning)
-//   - Edit & Delete action buttons
+//   - Edit & Delete action buttons (hover-reveal)
 //
 // Props:
-//   - task     : object → the task data
-//   - onEdit   : function(task) → opens edit modal
-//   - onDelete : function(taskId) → triggers delete
+//   - task       : object → the task data
+//   - onEdit     : function(task) → opens edit modal
+//   - onDelete   : function(taskId) → triggers delete
+//   - isDragging : boolean → true when card is being dragged
 // ==============================================
 
-const TaskCard = ({ task, onEdit, onDelete }) => {
+const TaskCard = ({ task, onEdit, onDelete, isDragging = false }) => {
   // ------------------------------------------
   // PRIORITY CONFIG
   // ------------------------------------------
-  // Maps priority strings to display colors.
-  // Used for the badge background and text.
   const priorityConfig = {
     high: {
       label: "High",
@@ -47,7 +49,6 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
   // ------------------------------------------
   // DUE DATE FORMATTING
   // ------------------------------------------
-  // Format the due date and check if it's overdue.
   const formatDueDate = (dateString) => {
     if (!dateString) return null;
     const date = new Date(dateString);
@@ -69,14 +70,23 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
   const dueDate = formatDueDate(task.dueDate);
 
   return (
-    <div className="task-card group">
-      {/* ---- Top Row: Priority Badge ---- */}
+    <div
+      className={`task-card group ${isDragging ? "task-card-dragging" : ""}`}
+    >
+      {/* ---- Top Row: Priority Badge + Drag Indicator ---- */}
       <div className="flex items-center justify-between mb-3">
         <span
           className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${priority.bgColor} ${priority.textColor}`}
         >
           <span className={`w-1.5 h-1.5 rounded-full ${priority.dotColor}`}></span>
           {priority.label}
+        </span>
+
+        {/* Drag handle indicator — 6-dot grip icon */}
+        <span className="text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M7 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM7 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM7 14a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+          </svg>
         </span>
       </div>
 
@@ -99,7 +109,6 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
             dueDate.isOverdue ? "text-red-400" : "text-slate-500"
           }`}
         >
-          {/* Calendar icon */}
           <svg
             className="w-3.5 h-3.5"
             fill="none"
@@ -120,52 +129,60 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
         </div>
       )}
 
-      {/* ---- Action Buttons (visible on hover) ---- */}
-      <div className="flex items-center gap-2 pt-2 border-t border-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity">
-        {/* Edit Button */}
-        <button
-          onClick={() => onEdit(task)}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-lg transition-all cursor-pointer"
-          aria-label={`Edit task: ${task.title}`}
-        >
-          <svg
-            className="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      {/* ---- Action Buttons (visible on hover, hidden during drag) ---- */}
+      {!isDragging && (
+        <div className="flex items-center gap-2 pt-2 border-t border-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity">
+          {/* Edit Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(task);
+            }}
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-lg transition-all cursor-pointer"
+            aria-label={`Edit task: ${task.title}`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
-          </svg>
-          Edit
-        </button>
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+            Edit
+          </button>
 
-        {/* Delete Button */}
-        <button
-          onClick={() => onDelete(task._id)}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer"
-          aria-label={`Delete task: ${task.title}`}
-        >
-          <svg
-            className="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          {/* Delete Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(task._id);
+            }}
+            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer"
+            aria-label={`Delete task: ${task.title}`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
-          </svg>
-          Delete
-        </button>
-      </div>
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };
