@@ -10,13 +10,13 @@ const Settings = () => {
       <div className="flex flex-col md:flex-row gap-10">
         
         {/* LEFT SIDEBAR */}
-        <div className="w-full md:w-56 shrink-0">
-          <nav className="flex flex-col space-y-1">
+        <div className="w-full md:w-56 shrink-0 border-b md:border-b-0 border-[#E2E8F0] pb-2 md:pb-0">
+          <nav className="flex overflow-x-auto md:flex-col gap-2 md:gap-0 md:space-y-1 pb-1 md:pb-0 scrollbar-hide">
             {["Account", "Security", "Notifications", "Workspace", "Billing"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`text-left px-4 py-2.5 rounded-lg text-[15px] transition-colors ${
+                className={`whitespace-nowrap text-left px-4 py-2.5 rounded-lg text-[15px] transition-colors ${
                   activeTab === tab
                     ? "bg-[#EEF2FF] text-[#6161FF] font-semibold"
                     : "text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A]"

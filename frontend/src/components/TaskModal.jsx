@@ -59,11 +59,11 @@ const TaskModal = ({ isOpen, onClose, title, children }) => {
           MODAL CARD
           ------------------------------------------ */}
       <div
-        className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E2E8F0] transform transition-all overflow-hidden"
+        className="w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E2E8F0] transform transition-all overflow-hidden flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0]">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-[#E2E8F0] shrink-0">
           <h2 className="text-xl font-bold text-[#0F172A]">{title}</h2>
           <button
             onClick={onClose}
@@ -88,7 +88,7 @@ const TaskModal = ({ isOpen, onClose, title, children }) => {
         </div>
 
         {/* Modal Body — renders whatever children are passed */}
-        <div className="bg-white">{children}</div>
+        <div className="bg-white overflow-y-auto">{children}</div>
       </div>
     </div>
   );

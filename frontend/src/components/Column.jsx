@@ -11,7 +11,7 @@ const Column = ({
   onAddTask,
 }) => {
   return (
-    <div className="w-[320px] shrink-0 kanban-column">
+    <div className="w-[85vw] max-w-[320px] shrink-0 kanban-column snap-center">
       {/* ------------------------------------------
           COLUMN HEADER
           ------------------------------------------ */}

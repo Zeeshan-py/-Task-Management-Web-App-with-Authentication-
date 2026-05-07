@@ -24,8 +24,8 @@ const TaskDetails = () => {
       {/* ------------------------------------------
           HEADER ROW
           ------------------------------------------ */}
-      <div className="flex items-center gap-4 mb-6">
-        <Link to="/dashboard" className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F1F5F9] text-[#64728B] transition-colors">
+      <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6">
+        <Link to="/dashboard" className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#F1F5F9] text-[#64728B] transition-colors shrink-0">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
         </Link>
         <span className="text-sm font-medium text-[#64728B] bg-[#F1F5F9] px-2.5 py-1 rounded-md">Task-1042</span>
@@ -108,7 +108,7 @@ const TaskDetails = () => {
                 Add File
               </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Image Attachment */}
               <div className="group border border-[#E2E8F0] rounded-xl overflow-hidden hover:border-[#CBD5E1] transition-colors cursor-pointer">
                 <div className="h-24 bg-[#F1F5F9] flex items-center justify-center text-[#94A3B8] group-hover:bg-[#E2E8F0] transition-colors">

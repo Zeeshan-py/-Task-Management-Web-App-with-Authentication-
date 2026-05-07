@@ -18,10 +18,10 @@ const Profile = () => {
           HEADER CARD
           ------------------------------------------ */}
       <div className="bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-sm flex flex-col md:flex-row items-center md:items-start gap-8 mb-8 relative">
-        <div className="absolute right-8 top-8">
-          <Link to="/settings" className="px-4 py-2 bg-white border border-[#E2E8F0] text-[#0F172A] font-medium text-sm rounded-lg hover:bg-[#F8FAFC] transition-colors flex items-center gap-2 shadow-sm">
+        <div className="absolute right-4 top-4 md:right-8 md:top-8">
+          <Link to="/settings" className="px-3 md:px-4 py-2 bg-white border border-[#E2E8F0] text-[#0F172A] font-medium text-sm rounded-lg hover:bg-[#F8FAFC] transition-colors flex items-center gap-2 shadow-sm">
             <svg className="w-4 h-4 text-[#64728B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
-            Edit Profile
+            <span className="hidden sm:inline">Edit Profile</span>
           </Link>
         </div>
 

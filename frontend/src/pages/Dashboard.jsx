@@ -220,7 +220,7 @@ const Dashboard = () => {
           KANBAN BOARD
           ============================================ */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-6 items-start overflow-x-auto pb-4">
+        <div className="flex gap-4 md:gap-6 items-start overflow-x-auto pb-4 snap-x snap-mandatory scroll-px-4">
           {COLUMNS.map((col) => (
             <Column
               key={col.id}
