@@ -32,118 +32,118 @@ const Settings = () => {
         <div className="flex-1 space-y-8">
           
           {/* Profile Settings Card */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-6">Profile Settings</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-[16px] font-semibold text-slate-800 mb-6">Profile Settings</h2>
             
-            <div className="flex flex-col sm:flex-row gap-8 mb-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden shrink-0 bg-slate-200">
+            <div className="flex flex-col sm:flex-row gap-6 mb-6">
+              <div className="w-20 h-20 rounded-full overflow-hidden shrink-0 bg-slate-100 border border-slate-200">
                 <img src="https://i.pravatar.cc/150?u=jane" alt="Jane Doe" className="w-full h-full object-cover" />
               </div>
               
-              <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-xl">
                 <div>
-                  <label className="block text-xs font-semibold text-[#64728B] uppercase tracking-wide mb-2">Full Name</label>
-                  <input type="text" defaultValue="Jane Doe" className="w-full px-4 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:bg-white transition-colors" />
+                  <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Full Name</label>
+                  <input type="text" defaultValue="Jane Doe" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#64728B] uppercase tracking-wide mb-2">Email Address</label>
-                  <input type="email" defaultValue="jane.doe@example.com" className="w-full px-4 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:bg-white transition-colors" />
+                  <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
+                  <input type="email" defaultValue="jane.doe@example.com" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm" />
                 </div>
               </div>
             </div>
 
-            <div className="mb-6 ml-0 sm:ml-28">
-              <label className="block text-xs font-semibold text-[#64728B] uppercase tracking-wide mb-2">Bio</label>
+            <div className="mb-6 ml-0 sm:ml-26 max-w-xl">
+              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Bio</label>
               <textarea 
                 defaultValue="Product Manager focused on agile workflows and team efficiency."
-                className="w-full px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-lg text-[#0F172A] min-h-[100px] resize-none focus:outline-none focus:border-[#6161FF] focus:bg-white transition-colors"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 min-h-[90px] resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm"
               ></textarea>
             </div>
 
-            <div className="flex justify-end">
-              <button className="px-6 py-2 bg-[#6161FF] text-white font-medium rounded-lg hover:bg-[#4F46E5] transition-colors shadow-sm">
+            <div className="flex justify-end border-t border-slate-100 pt-5 mt-2">
+              <button className="px-5 py-2 bg-indigo-600 text-white text-[13px] font-medium rounded-md hover:bg-indigo-700 transition-colors shadow-sm">
                 Save Changes
               </button>
             </div>
           </div>
 
           {/* Appearance Card */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-2">Appearance</h2>
-            <p className="text-[14px] text-[#64728B] mb-6">Customize the visual theme of TaskFlow.</p>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-[16px] font-semibold text-slate-800 mb-1">Appearance</h2>
+            <p className="text-[13px] text-slate-500 mb-6">Customize the visual theme of TaskFlow.</p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-2xl">
               {/* Light Theme */}
               <div className="cursor-pointer group">
-                <div className="h-32 rounded-xl border-2 border-[#6161FF] bg-[#F8FAFC] p-3 mb-3 relative overflow-hidden">
-                  <div className="w-full h-4 bg-white rounded shadow-sm mb-2"></div>
-                  <div className="w-3/4 h-16 bg-white rounded shadow-sm"></div>
-                  <div className="absolute bottom-3 right-3 text-[#6161FF]">
-                    <svg className="w-5 h-5 bg-white rounded-full" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                <div className="h-28 rounded-lg border-2 border-indigo-500 bg-slate-50 p-2.5 mb-2 relative overflow-hidden shadow-sm">
+                  <div className="w-full h-3 bg-white rounded shadow-sm mb-2"></div>
+                  <div className="w-3/4 h-12 bg-white rounded shadow-sm"></div>
+                  <div className="absolute bottom-2 right-2 text-indigo-500">
+                    <svg className="w-4 h-4 bg-white rounded-full" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
                   </div>
                 </div>
-                <p className="text-sm font-semibold text-[#0F172A] text-center">Light</p>
+                <p className="text-[13px] font-semibold text-slate-800 text-center">Light</p>
               </div>
 
               {/* Dark Theme */}
               <div className="cursor-pointer group">
-                <div className="h-32 rounded-xl border-2 border-transparent bg-[#1E293B] p-3 mb-3 hover:border-[#94A3B8] transition-colors overflow-hidden">
-                  <div className="w-full h-4 bg-[#334155] rounded mb-2"></div>
-                  <div className="w-3/4 h-16 bg-[#334155] rounded"></div>
+                <div className="h-28 rounded-lg border-2 border-transparent bg-slate-900 p-2.5 mb-2 hover:border-slate-300 transition-all overflow-hidden shadow-sm">
+                  <div className="w-full h-3 bg-slate-800 rounded mb-2"></div>
+                  <div className="w-3/4 h-12 bg-slate-800 rounded"></div>
                 </div>
-                <p className="text-sm font-medium text-[#64728B] text-center group-hover:text-[#0F172A] transition-colors">Dark</p>
+                <p className="text-[13px] font-medium text-slate-500 text-center group-hover:text-slate-800 transition-colors">Dark</p>
               </div>
 
               {/* System Theme */}
               <div className="cursor-pointer group">
-                <div className="h-32 rounded-xl border-2 border-transparent bg-gradient-to-r from-[#F8FAFC] from-50% to-[#1E293B] to-50% p-3 mb-3 hover:border-[#94A3B8] transition-colors overflow-hidden flex">
+                <div className="h-28 rounded-lg border-2 border-transparent bg-gradient-to-r from-slate-50 from-50% to-slate-900 to-50% p-2.5 mb-2 hover:border-slate-300 transition-all overflow-hidden flex shadow-sm">
                   <div className="w-1/2 pr-1">
-                    <div className="w-full h-4 bg-white rounded shadow-sm mb-2"></div>
+                    <div className="w-full h-3 bg-white rounded shadow-sm mb-2"></div>
                   </div>
                   <div className="w-1/2 pl-1">
-                     <div className="w-full h-4 bg-[#334155] rounded mb-2"></div>
+                     <div className="w-full h-3 bg-slate-800 rounded mb-2"></div>
                   </div>
                 </div>
-                <p className="text-sm font-medium text-[#64728B] text-center group-hover:text-[#0F172A] transition-colors">System</p>
+                <p className="text-[13px] font-medium text-slate-500 text-center group-hover:text-slate-800 transition-colors">System</p>
               </div>
             </div>
           </div>
 
           {/* Notification Preferences */}
-          <div className="bg-white border border-[#E2E8F0] rounded-xl p-8 shadow-sm">
-            <h2 className="text-xl font-bold text-[#0F172A] mb-6">Notification Preferences</h2>
+          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-[16px] font-semibold text-slate-800 mb-6">Notification Preferences</h2>
             
-            <div className="space-y-6">
+            <div className="space-y-4 max-w-2xl">
               {/* Email Notifications */}
-              <div className="flex items-center justify-between pb-6 border-b border-[#E2E8F0]">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div>
-                  <h3 className="text-[15px] font-semibold text-[#0F172A] mb-1">Email Notifications</h3>
-                  <p className="text-[13px] text-[#64728B]">Receive daily digests and critical alerts.</p>
+                  <h3 className="text-[14px] font-semibold text-slate-800 mb-0.5">Email Notifications</h3>
+                  <p className="text-[13px] text-slate-500">Receive daily digests and critical alerts.</p>
                 </div>
-                <div className="relative w-11 h-6 bg-[#6161FF] rounded-full cursor-pointer">
-                  <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="relative w-10 h-5 bg-indigo-600 rounded-full cursor-pointer shadow-inner">
+                  <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
                 </div>
               </div>
 
               {/* Desktop Push */}
-              <div className="flex items-center justify-between pb-6 border-b border-[#E2E8F0]">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div>
-                  <h3 className="text-[15px] font-semibold text-[#0F172A] mb-1">Desktop Push</h3>
-                  <p className="text-[13px] text-[#64728B]">Real-time alerts for @mentions and assignments.</p>
+                  <h3 className="text-[14px] font-semibold text-slate-800 mb-0.5">Desktop Push</h3>
+                  <p className="text-[13px] text-slate-500">Real-time alerts for @mentions and assignments.</p>
                 </div>
-                <div className="relative w-11 h-6 bg-[#CBD5E1] rounded-full cursor-pointer">
-                  <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="relative w-10 h-5 bg-slate-200 rounded-full cursor-pointer shadow-inner">
+                  <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
                 </div>
               </div>
 
               {/* Slack Integration */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between pt-1">
                 <div>
-                  <h3 className="text-[15px] font-semibold text-[#0F172A] mb-1">Slack Integration</h3>
-                  <p className="text-[13px] text-[#64728B]">Sync notifications to your connected workspace.</p>
+                  <h3 className="text-[14px] font-semibold text-slate-800 mb-0.5">Slack Integration</h3>
+                  <p className="text-[13px] text-slate-500">Sync notifications to your connected workspace.</p>
                 </div>
-                <div className="relative w-11 h-6 bg-[#6161FF] rounded-full cursor-pointer">
-                  <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="relative w-10 h-5 bg-indigo-600 rounded-full cursor-pointer shadow-inner">
+                  <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm"></div>
                 </div>
               </div>
             </div>

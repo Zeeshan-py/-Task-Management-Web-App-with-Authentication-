@@ -169,47 +169,44 @@ const Dashboard = () => {
   return (
     <div className="w-full max-w-[1400px] mx-auto">
       {/* ============================================
-          HEADER SECTION (Matches Image 2)
+          HEADER SECTION
           ============================================ */}
-      <div className="mb-8">
+      <div className="mb-6 md:mb-8">
         {/* Breadcrumbs */}
-        <div className="text-sm text-[#64728B] mb-2 font-medium flex items-center gap-2">
-          <span>Projects</span>
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-          <span>2024 Initiatives</span>
-          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+        <div className="text-[13px] text-slate-500 mb-2 font-medium flex items-center gap-1.5">
+          <span className="hover:text-slate-800 cursor-pointer transition-colors">Projects</span>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          <span className="hover:text-slate-800 cursor-pointer transition-colors">2024 Initiatives</span>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </div>
 
         <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
-          <h1 className="text-4xl font-bold text-[#0F172A] tracking-tight">
-            Marketing Launch<br/>2024
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
+            Marketing Launch<br className="hidden xl:block" /> 2024
           </h1>
 
-          <div className="flex flex-wrap items-center gap-3 mt-4 xl:mt-0">
+          <div className="flex flex-wrap items-center gap-2.5 mt-2 xl:mt-0">
             {/* Filter Buttons */}
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E2E8F0] rounded-full text-sm font-medium text-[#0F172A] hover:bg-[#F8FAFC] transition-colors">
-              <svg className="w-4 h-4 text-[#64728B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
               Status
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E2E8F0] rounded-full text-sm font-medium text-[#0F172A] hover:bg-[#F8FAFC] transition-colors">
-              <svg className="w-4 h-4 text-[#64728B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
               Assignee
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E2E8F0] rounded-full text-sm font-medium text-[#0F172A] hover:bg-[#F8FAFC] transition-colors">
-              <svg className="w-4 h-4 text-[#64728B]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
               Priority
             </button>
 
             {/* View Toggles */}
-            <div className="flex items-center ml-2 p-1 bg-white border border-[#E2E8F0] rounded-lg">
-              <button className="p-1.5 bg-[#F1F5F9] rounded text-[#6161FF]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>
+            <div className="flex items-center ml-1 p-0.5 bg-slate-100/80 border border-slate-200/60 rounded-md">
+              <button className="p-1.5 bg-white shadow-sm rounded border border-slate-200/50 text-indigo-600">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>
               </button>
-              <button className="p-1.5 text-[#64728B] hover:text-[#0F172A]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-              </button>
-              <button className="p-1.5 text-[#64728B] hover:text-[#0F172A]">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>
+              <button className="p-1.5 text-slate-500 hover:text-slate-800 transition-colors">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
               </button>
             </div>
           </div>
@@ -220,7 +217,7 @@ const Dashboard = () => {
           KANBAN BOARD
           ============================================ */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-4 md:gap-6 items-start overflow-x-auto pb-4 snap-x snap-mandatory scroll-px-4">
+        <div className="flex gap-4 md:gap-5 items-start overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-px-4 custom-scrollbar-horizontal">
           {COLUMNS.map((col) => (
             <Column
               key={col.id}
