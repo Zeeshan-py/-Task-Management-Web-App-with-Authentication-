@@ -8,6 +8,7 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
+// Removed "0.0.0.0" because Railway health checks use IPv6
+app.listen(PORT, () => {
   console.log(`SERVER STARTED ON ${PORT}`);
 });
