@@ -15,12 +15,23 @@
 // ==============================================
 
 // ------------------------------------------
-// 1. LOAD ENVIRONMENT VARIABLES
+// 1. GLOBAL ERROR HANDLERS (Debugging 502)
 // ------------------------------------------
-// dotenv.config() reads the .env file and loads
-// its key=value pairs into process.env.
-// This MUST be called before accessing any
-// process.env variables (like MONGO_URI).
+process.on("uncaughtException", (err) => {
+  console.error("CRITICAL ERROR: Uncaught Exception!");
+  console.error(err.name, err.message, err.stack);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("CRITICAL ERROR: Unhandled Rejection!");
+  console.error(err);
+  process.exit(1);
+});
+
+// ------------------------------------------
+// 2. LOAD ENVIRONMENT VARIABLES
+// ------------------------------------------
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -56,7 +67,8 @@ const app = express();
  */
 
 // Helmet helps secure Express apps by setting various HTTP headers
-app.use(helmet());
+// TEMPORARILY DISABLED FOR DEBUGGING 502
+// app.use(helmet());
 
 // Morgan logs HTTP requests
 if (process.env.NODE_ENV === "development") {
@@ -66,26 +78,8 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // CORS setup for local development and deployed frontend
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:5173"
-];
-
-if (process.env.FRONTEND_URL) {
-  // Strip trailing slash if present to avoid CORS mismatch
-  const cleanUrl = process.env.FRONTEND_URL.replace(/\/$/, "");
-  allowedOrigins.push(cleanUrl);
-}
-
-// Security: Prevent wildcard with credentials and avoid callback crashes
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  })
-);
+// TEMPORARILY SIMPLIFIED FOR DEBUGGING 502
+app.use(cors());
 
 /**
  * express.json() - Body Parser
@@ -113,12 +107,7 @@ app.use(express.json());
  *   - CI/CD pipeline checks
  */
 app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "API is running...",
-    environment: process.env.NODE_ENV,
-    timestamp: new Date().toISOString(),
-  });
+  res.send("API is running...");
 });
 
 /**
@@ -144,18 +133,19 @@ app.use("/api/tasks", require("./routes/taskRoutes"));
 // error handlers need to be last.
 
 // Catches requests to undefined routes → 404
-app.use(notFound);
+// TEMPORARILY DISABLED FOR DEBUGGING 502
+// app.use(notFound);
 
 // Formats all errors as clean JSON responses
-app.use(errorHandler);
+// TEMPORARILY DISABLED FOR DEBUGGING 502
+// app.use(errorHandler);
 
 // ------------------------------------------
 // 8. START SERVER
 // ------------------------------------------
 const PORT = process.env.PORT || 5000;
 
-// Start server - intentionally omitting host binding to allow both IPv4 and IPv6 
-// (Railway internal network might route via IPv6, causing 502 if locked to 0.0.0.0)
-app.listen(PORT, () => {
+// Start server
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
 });
