@@ -7,8 +7,8 @@ node_modules/
 
 # Environment Variables (NEVER commit secrets)
 .env
-.env.local
-.env.production
+.env.*
+*.env
 
 # Logs
 logs/
