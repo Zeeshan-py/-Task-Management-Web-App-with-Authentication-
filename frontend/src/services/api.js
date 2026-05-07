@@ -10,14 +10,9 @@ import axios from "axios";
 
 // Create a reusable Axios instance
 const API = axios.create({
-  baseURL: "/api",
-  // WHY "/api" and not "http://localhost:5000/api"?
-  // - Vite's proxy in vite.config.js forwards
-  //   any request starting with "/api" to the
-  //   backend on port 5000.
-  // - This avoids CORS issues during development
-  //   and works in production where both frontend
-  //   and backend are served from the same domain.
+  // Use VITE_API_URL in production (e.g. from Netlify environment variables),
+  // otherwise fallback to "/api" which uses the Vite proxy in development.
+  baseURL: import.meta.env.VITE_API_URL || "/api",
 });
 
 // ------------------------------------------

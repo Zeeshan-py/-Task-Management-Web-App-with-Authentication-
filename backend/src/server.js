@@ -29,6 +29,8 @@ dotenv.config();
 // ------------------------------------------
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const connectDB = require("./config/db");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
@@ -50,15 +52,30 @@ const app = express();
 // ------------------------------------------
 
 /**
- * cors() - Cross-Origin Resource Sharing
- *
- * WHY? When your React frontend (localhost:3000)
- * makes a request to your Express backend
- * (localhost:5000), the browser blocks it by
- * default for security. cors() tells the browser
- * "it's okay, allow this cross-origin request."
+ * Security, Logging, and CORS Configuration
  */
-app.use(cors());
+
+// Helmet helps secure Express apps by setting various HTTP headers
+app.use(helmet());
+
+// Morgan logs HTTP requests
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+} else {
+  app.use(morgan("combined"));
+}
+
+// CORS setup for local development and deployed frontend
+const allowedOrigins = process.env.FRONTEND_URL 
+  ? [process.env.FRONTEND_URL, "http://localhost:3000"] 
+  : "*";
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 /**
  * express.json() - Body Parser

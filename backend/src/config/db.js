@@ -24,7 +24,23 @@ const mongoose = require("mongoose");
  */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    let uri = process.env.MONGO_URI;
+
+    // Automatically URL encode the password if it contains special characters
+    // Matches: (mongodb[+srv]://username:)(password)(@cluster...)
+    const uriMatch = uri.match(/^(mongodb(?:\+srv)?:\/\/[^:]+:)(.*)(@[^@]+)$/);
+    if (uriMatch) {
+      const prefix = uriMatch[1];
+      const password = uriMatch[2];
+      const suffix = uriMatch[3];
+
+      // If the password is not already encoded, encode it
+      if (decodeURIComponent(password) === password) {
+        uri = prefix + encodeURIComponent(password) + suffix;
+      }
+    }
+
+    const conn = await mongoose.connect(uri);
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
