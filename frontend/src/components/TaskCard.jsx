@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import { CalendarDays, CheckCircle2, Pencil, Trash2 } from "lucide-react";
+
 const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const hashValue = [...String(task._id || task.title || "task")].reduce(
     (acc, char) => acc + char.charCodeAt(0),
@@ -10,21 +13,21 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const priorityConfig = {
     high: {
       label: "High",
-      bgColor: "bg-[#FEF2F2]", // light red
-      textColor: "text-[#EF4444]", // red
-      icon: "⏫", // Replace with chevron if possible, using emoji for now
+      bgColor: "bg-rose-50",
+      textColor: "text-rose-600",
+      icon: "H",
     },
     medium: {
       label: "Med",
-      bgColor: "bg-[#FFFBEB]", // light yellow
-      textColor: "text-[#F59E0B]", // yellow
-      icon: "➖",
+      bgColor: "bg-amber-50",
+      textColor: "text-amber-600",
+      icon: "M",
     },
     low: {
       label: "Low",
-      bgColor: "bg-[#F0FDF4]", // light green
-      textColor: "text-[#22C55E]", // green
-      icon: "⏬",
+      bgColor: "bg-emerald-50",
+      textColor: "text-emerald-600",
+      icon: "L",
     },
   };
 
@@ -40,7 +43,7 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const isMarketing = task.title.toLowerCase().includes('marketing') || task.title.toLowerCase().includes('seo');
   
   const tagLabel = isDesign ? "Design" : isMarketing ? "Marketing" : "Content";
-  const tagColor = isDesign ? "bg-[#E0E7FF] text-[#4F46E5]" : isMarketing ? "bg-[#F3E8FF] text-[#9333EA]" : "bg-[#DBEAFE] text-[#2563EB]";
+  const tagColor = isDesign ? "bg-indigo-50 text-indigo-700" : isMarketing ? "bg-fuchsia-50 text-fuchsia-700" : "bg-sky-50 text-sky-700";
   
   const progressValue = 45 + (hashValue % 45); // 45-89%
   const checklistsTotal = 2 + (hashValue % 4); // 2-5
@@ -66,43 +69,48 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const dueDate = formatDueDate(task.dueDate);
 
   return (
-    <div className={`group relative bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all cursor-pointer min-h-[168px] ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}>
+    <motion.div
+      whileHover={{ y: -2 }}
+      className={`group relative bg-white/90 backdrop-blur rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-lg hover:shadow-indigo-100/60 hover:border-indigo-200 transition-all cursor-pointer min-h-[174px] ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}
+    >
       {/* ---- Edit/Delete Hover Actions ---- */}
       {!isDragging && (
         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-white/95 backdrop-blur p-1 rounded-md shadow-sm border border-slate-100">
           <button onClick={(e) => { e.stopPropagation(); onEdit(task); }} className="p-1 text-indigo-500 hover:bg-slate-100 rounded transition-colors" aria-label="Edit">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            <Pencil className="w-3.5 h-3.5" />
           </button>
           <button onClick={(e) => { e.stopPropagation(); onDelete(task._id); }} className="p-1 text-red-500 hover:bg-slate-100 rounded transition-colors" aria-label="Delete">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>
       )}
 
       {/* ---- Top Row: Tags & Priority ---- */}
-      <div className="flex items-center gap-2 mb-2.5">
+      <div className="flex items-center gap-2 mb-2.5 flex-wrap">
         {/* Priority Badge */}
-        {task.priority !== "low" && (
-          <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider ${priority.bgColor} ${priority.textColor}`}>
+        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${priority.bgColor} ${priority.textColor}`}>
             <span>{priority.icon}</span> {priority.label}
-          </span>
-        )}
+        </span>
         
         {/* Category Tag */}
-        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider ${tagColor}`}>
+        <span className={`inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${tagColor}`}>
           {tagLabel}
         </span>
       </div>
 
       {/* ---- Title ---- */}
-      <h4 className="text-slate-800 font-semibold text-[14px] mb-1.5 leading-snug">
+      <h4 className="text-slate-900 font-semibold text-[14px] mb-1.5 leading-snug">
         {task.title}
       </h4>
 
       {/* ---- Description ---- */}
-      {task.description && (
+      {task.description ? (
         <p className="text-slate-500 text-[12.5px] leading-relaxed mb-3 line-clamp-2">
           {task.description}
+        </p>
+      ) : (
+        <p className="text-slate-400 text-[12px] leading-relaxed mb-3 line-clamp-2">
+          No description provided yet.
         </p>
       )}
 
@@ -114,7 +122,7 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
             <span>{progressValue}%</span>
           </div>
           <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-            <div className="bg-indigo-500 h-1.5 rounded-full" style={{ width: `${progressValue}%` }}></div>
+            <div className="bg-gradient-to-r from-indigo-500 to-violet-500 h-1.5 rounded-full" style={{ width: `${progressValue}%` }}></div>
           </div>
         </div>
       )}
@@ -125,14 +133,14 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
           {/* Due Date */}
           {dueDate && (
             <div className={`flex items-center gap-1 text-[11.5px] font-medium ${dueDate.isOverdue ? "text-red-500" : "text-slate-400"}`}>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <CalendarDays className="w-3.5 h-3.5" />
               <span>{dueDate.formatted}</span>
             </div>
           )}
 
           {/* Checklist (Dummy) */}
           <div className="flex items-center gap-1 text-[11.5px] font-medium text-slate-400">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <CheckCircle2 className="w-3.5 h-3.5" />
             <span>{checklistsDone}/{checklistsTotal}</span>
           </div>
         </div>
@@ -149,7 +157,7 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

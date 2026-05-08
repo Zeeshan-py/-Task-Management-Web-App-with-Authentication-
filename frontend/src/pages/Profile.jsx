@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Award, ChartNoAxesCombined, CheckCircle2, Sparkles } from "lucide-react";
 
 const Profile = () => {
   // Generate dummy heatmap data (7 rows, approx 20 cols)
   const heatmapData = Array.from({ length: 140 }).map((_, i) => {
-    const value = Math.random();
+    const value = (Math.sin(i * 0.37) + 1) / 2;
     if (value > 0.8) return 'bg-[#6161FF]';
     if (value > 0.6) return 'bg-[#818cf8]';
     if (value > 0.4) return 'bg-[#a5b4fc]';
@@ -12,15 +14,19 @@ const Profile = () => {
   });
 
   return (
-    <div className="max-w-[1200px] mx-auto pb-12">
+    <div className="max-w-[1200px] mx-auto pb-12 space-y-6">
       
       {/* ------------------------------------------
           HEADER CARD
           ------------------------------------------ */}
-      <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-8 relative">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white/90 backdrop-blur border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6 relative"
+      >
         <div className="absolute right-4 top-4 md:right-6 md:top-6">
-          <Link to="/settings" className="px-3 md:px-4 py-1.5 bg-white border border-slate-200 text-slate-700 font-medium text-[13px] rounded-md hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2 shadow-sm">
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+          <Link to="/settings" className="px-3 md:px-4 py-2 bg-white border border-slate-200 text-slate-700 font-medium text-[13px] rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2 shadow-sm">
+            <Sparkles className="w-4 h-4 text-slate-400" />
             <span className="hidden sm:inline">Edit Profile</span>
           </Link>
         </div>
@@ -44,18 +50,18 @@ const Profile = () => {
             </span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ------------------------------------------
           STATS ROW
           ------------------------------------------ */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         {/* Stat 1 */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-md bg-indigo-50 flex items-center justify-center text-indigo-600">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <CheckCircle2 className="w-4 h-4" />
             </div>
             <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Tasks Completed</p>
           </div>
@@ -69,10 +75,10 @@ const Profile = () => {
         </div>
 
         {/* Stat 2 */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-md bg-fuchsia-50 flex items-center justify-center text-fuchsia-600">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <ChartNoAxesCombined className="w-4 h-4" />
             </div>
             <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Active Projects</p>
           </div>
@@ -83,10 +89,10 @@ const Profile = () => {
         </div>
 
         {/* Stat 3 */}
-        <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-md bg-slate-100 flex items-center justify-center text-slate-600">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+              <Award className="w-4 h-4" />
             </div>
             <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Contribution Rank</p>
           </div>
@@ -100,13 +106,13 @@ const Profile = () => {
       {/* ------------------------------------------
           MAIN CONTENT (2 Columns)
           ------------------------------------------ */}
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-4">
         
         {/* LEFT COLUMN - Heatmap */}
-        <div className="flex-1 bg-white border border-slate-200 rounded-xl p-6 shadow-sm overflow-hidden">
+        <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
             <h2 className="text-[15px] font-semibold text-slate-800 flex items-center gap-2">
-              <svg className="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+              <ChartNoAxesCombined className="w-4 h-4 text-indigo-500" />
               Productivity Heatmap
             </h2>
             <div className="inline-flex items-center gap-1.5 border border-slate-200 rounded-md px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 cursor-pointer self-start sm:self-auto">
@@ -144,16 +150,16 @@ const Profile = () => {
         </div>
 
         {/* RIGHT COLUMN - Achievements */}
-        <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <div className="w-full lg:w-[340px] xl:w-[380px] shrink-0 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
           <h2 className="text-[15px] font-semibold text-slate-800 mb-5 flex items-center gap-2">
-            <svg className="w-4 h-4 text-fuchsia-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
+            <Award className="w-4 h-4 text-fuchsia-500" />
             Achievements
           </h2>
           
           <div className="space-y-3">
             
             {/* Achievement 1 */}
-            <div className="flex gap-3.5 p-3 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors">
+            <div className="flex gap-3.5 p-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors">
               <div className="w-10 h-10 shrink-0 rounded-md bg-indigo-50 flex items-center justify-center text-indigo-600">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
               </div>
@@ -164,7 +170,7 @@ const Profile = () => {
             </div>
 
             {/* Achievement 2 */}
-            <div className="flex gap-3.5 p-3 rounded-lg border border-slate-200 hover:border-slate-300 transition-colors">
+            <div className="flex gap-3.5 p-3 rounded-xl border border-slate-200 hover:border-slate-300 transition-colors">
               <div className="w-10 h-10 shrink-0 rounded-md bg-fuchsia-50 flex items-center justify-center text-fuchsia-600">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>
               </div>
@@ -175,7 +181,7 @@ const Profile = () => {
             </div>
 
             {/* Locked Achievement */}
-            <div className="flex gap-3.5 p-3 rounded-lg border border-slate-100 opacity-60 bg-slate-50/50">
+            <div className="flex gap-3.5 p-3 rounded-xl border border-slate-100 opacity-60 bg-slate-50/50">
               <div className="w-10 h-10 shrink-0 rounded-md bg-slate-200/60 flex items-center justify-center text-slate-500">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
               </div>

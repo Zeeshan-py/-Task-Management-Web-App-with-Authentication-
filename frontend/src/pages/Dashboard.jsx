@@ -7,6 +7,8 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import { useAuth } from "../context/AuthContext";
 import { getTasks, createTask, updateTask, deleteTask, moveTask } from "../services/api";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { CalendarClock, CircleDashed, Clock3, FolderKanban } from "lucide-react";
 
 // Components
 import Loader from "../components/Loader";
@@ -171,55 +173,69 @@ const Dashboard = () => {
   const doneCount = getColumnTasks("done").length;
 
   return (
-    <div className="w-full max-w-[1450px] mx-auto">
+    <div className="w-full max-w-[1520px] mx-auto space-y-5">
       {/* ============================================
           HEADER SECTION
           ============================================ */}
-      <div className="mb-6 md:mb-8 rounded-2xl border border-slate-200/70 bg-white/80 shadow-sm p-4 md:p-6">
+      <div className="rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm p-4 md:p-6 lg:p-7">
         {/* Breadcrumbs */}
-        <div className="text-[13px] text-slate-500 mb-2 font-medium flex items-center gap-1.5">
+        <div className="text-[13px] text-slate-500 mb-3 font-medium flex items-center gap-1.5">
           <span className="hover:text-slate-800 cursor-pointer transition-colors">Projects</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           <span className="hover:text-slate-800 cursor-pointer transition-colors">2024 Initiatives</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </div>
 
-        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
               Welcome back, {user?.name?.split(" ")[0] || "there"}
             </h1>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 mt-1.5">
               You have {tasks.length} tasks across your active board.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2.5 mt-2 xl:mt-0">
             {/* Filter Buttons */}
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <CircleDashed className="w-4 h-4 text-slate-400" />
               To Do: {todoCount}
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <Clock3 className="w-4 h-4 text-slate-400" />
               In Progress: {inProgressCount}
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-              <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
+            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+              <CalendarClock className="w-4 h-4 text-slate-400" />
               Review: {doneCount}
             </button>
-
-            {/* View Toggles */}
-            <div className="flex items-center ml-1 p-0.5 bg-slate-100/80 border border-slate-200/60 rounded-md">
-              <button className="p-1.5 bg-white shadow-sm rounded border border-slate-200/50 text-indigo-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>
-              </button>
-              <button className="p-1.5 text-slate-500 hover:text-slate-800 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-              </button>
-            </div>
           </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Total Tasks</p>
+          <div className="mt-3 flex items-center justify-between">
+            <h3 className="text-3xl font-bold text-slate-900">{tasks.length}</h3>
+            <FolderKanban className="w-5 h-5 text-indigo-500" />
+          </div>
+        </motion.div>
+        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Active Sprint</p>
+          <div className="mt-3 flex items-center justify-between">
+            <h3 className="text-3xl font-bold text-slate-900">{inProgressCount}</h3>
+            <Clock3 className="w-5 h-5 text-violet-500" />
+          </div>
+        </motion.div>
+        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Completed</p>
+          <div className="mt-3 flex items-center justify-between">
+            <h3 className="text-3xl font-bold text-slate-900">{doneCount}</h3>
+            <CalendarClock className="w-5 h-5 text-emerald-500" />
+          </div>
+        </motion.div>
       </div>
 
       {/* ============================================

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CalendarDays, Tag } from "lucide-react";
 
 const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -61,7 +62,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col">
-      <div className="p-6 space-y-5">
+      <div className="p-6 space-y-5 bg-white">
         
         {/* ---- Title Input ---- */}
         <div>
@@ -77,7 +78,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
             required
             maxLength={100}
             placeholder="What needs to be done?"
-            className="w-full px-3 py-2.5 bg-white border border-[#E2E8F0] rounded-lg text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-1 focus:ring-[#6161FF] transition-colors"
+            className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-2 focus:ring-[#6161FF]/20 transition-colors"
           />
         </div>
 
@@ -86,7 +87,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
           <label htmlFor="task-description" className="block text-[13px] font-semibold text-[#0F172A] mb-1.5">
             Description
           </label>
-          <div className="border border-[#E2E8F0] rounded-lg overflow-hidden focus-within:border-[#6161FF] focus-within:ring-1 focus-within:ring-[#6161FF] transition-all bg-[#F8FAFC]">
+          <div className="border border-slate-200 rounded-xl overflow-hidden focus-within:border-[#6161FF] focus-within:ring-2 focus-within:ring-[#6161FF]/20 transition-all bg-[#F8FAFC]">
             {/* Rich Text Toolbar Mockup */}
             <div className="px-3 py-2 border-b border-[#E2E8F0] flex gap-2 text-[#0F172A] bg-[#F8FAFC]">
               <button type="button" className="p-1 hover:bg-[#E2E8F0] rounded transition-colors"><strong className="font-serif text-[15px]">B</strong></button>
@@ -121,7 +122,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full px-3 py-2.5 bg-white border border-[#E2E8F0] rounded-lg text-[#0F172A] appearance-none focus:outline-none focus:border-[#6161FF] focus:ring-1 focus:ring-[#6161FF] transition-colors cursor-pointer"
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[#0F172A] appearance-none focus:outline-none focus:border-[#6161FF] focus:ring-2 focus:ring-[#6161FF]/20 transition-colors cursor-pointer"
               >
                 <option value="medium">Select priority</option>
                 <option value="low">Low Priority</option>
@@ -140,13 +141,13 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
               Assignee
             </label>
             <div className="relative">
-              <select className="w-full px-3 py-2.5 bg-white border border-[#E2E8F0] rounded-lg text-[#0F172A] appearance-none focus:outline-none focus:border-[#6161FF] focus:ring-1 focus:ring-[#6161FF] transition-colors cursor-pointer">
+              <select className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[#0F172A] appearance-none focus:outline-none focus:border-[#6161FF] focus:ring-2 focus:ring-[#6161FF]/20 transition-colors cursor-pointer">
                 <option>Unassigned</option>
                 <option>Jane Doe</option>
                 <option>Alex Rivera</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[#64728B]">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <Tag className="w-4 h-4" />
               </div>
             </div>
           </div>
@@ -163,8 +164,9 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
                 name="dueDate"
                 value={formData.dueDate}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-white border border-[#E2E8F0] rounded-lg text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-1 focus:ring-[#6161FF] transition-colors"
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-2 focus:ring-[#6161FF]/20 transition-colors"
               />
+              <CalendarDays className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
           </div>
 
@@ -177,7 +179,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
               <input
                 type="text"
                 placeholder="Add labels (comma separated)"
-                className="w-full px-3 py-2.5 bg-white border border-[#E2E8F0] rounded-lg text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-1 focus:ring-[#6161FF] transition-colors"
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[#0F172A] focus:outline-none focus:border-[#6161FF] focus:ring-2 focus:ring-[#6161FF]/20 transition-colors"
               />
               <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-[#64728B]">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
@@ -189,7 +191,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
       </div>
 
       {/* ---- Action Buttons Footer ---- */}
-      <div className="bg-[#F8FAFC] px-6 py-4 border-t border-[#E2E8F0] flex items-center justify-end gap-3 rounded-b-xl">
+      <div className="bg-slate-50/80 px-6 py-4 border-t border-slate-200 flex items-center justify-end gap-3 rounded-b-xl">
         <button
           type="button"
           onClick={onCancel}
@@ -200,7 +202,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
         <button
           type="submit"
           disabled={isLoading || !formData.title.trim()}
-          className="px-5 py-2 text-sm font-medium text-white bg-[#8B5CF6] hover:bg-[#7C3AED] rounded-lg transition-colors shadow-sm disabled:opacity-50"
+          className="px-5 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-sm disabled:opacity-50"
         >
           {isLoading
             ? "Saving..."

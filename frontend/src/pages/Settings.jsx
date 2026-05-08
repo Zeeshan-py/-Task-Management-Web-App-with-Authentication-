@@ -1,30 +1,44 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { Bell, CreditCard, Shield, User, Workflow } from "lucide-react";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("Account");
+  const tabs = [
+    { label: "Account", icon: User },
+    { label: "Security", icon: Shield },
+    { label: "Notifications", icon: Bell },
+    { label: "Workspace", icon: Workflow },
+    { label: "Billing", icon: CreditCard },
+  ];
 
   return (
     <div className="max-w-[1000px] mx-auto pb-12">
-      <h1 className="text-2xl font-bold text-[#0F172A] mb-8">Settings</h1>
+      <h1 className="text-3xl font-bold text-slate-900 mb-6 tracking-tight">Settings</h1>
 
       <div className="flex flex-col md:flex-row gap-10">
         
         {/* LEFT SIDEBAR */}
         <div className="w-full md:w-56 shrink-0 border-b md:border-b-0 border-[#E2E8F0] pb-2 md:pb-0">
           <nav className="flex overflow-x-auto md:flex-col gap-2 md:gap-0 md:space-y-1 pb-1 md:pb-0 scrollbar-hide">
-            {["Account", "Security", "Notifications", "Workspace", "Billing"].map((tab) => (
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
+                key={tab.label}
+                onClick={() => setActiveTab(tab.label)}
                 className={`whitespace-nowrap text-left px-4 py-2.5 rounded-lg text-[15px] transition-colors ${
-                  activeTab === tab
-                    ? "bg-[#EEF2FF] text-[#6161FF] font-semibold"
+                  activeTab === tab.label
+                    ? "bg-indigo-50 text-indigo-700 font-semibold"
                     : "text-[#475569] hover:bg-[#F8FAFC] hover:text-[#0F172A]"
                 }`}
               >
-                {tab}
+                <span className="inline-flex items-center gap-2">
+                  <Icon className="w-4 h-4" />
+                  {tab.label}
+                </span>
               </button>
-            ))}
+            )})}
           </nav>
         </div>
 
@@ -32,7 +46,7 @@ const Settings = () => {
         <div className="flex-1 space-y-8">
           
           {/* Profile Settings Card */}
-          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-[16px] font-semibold text-slate-800 mb-6">Profile Settings</h2>
             
             <div className="flex flex-col sm:flex-row gap-6 mb-6">
@@ -43,11 +57,11 @@ const Settings = () => {
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 max-w-xl">
                 <div>
                   <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Full Name</label>
-                  <input type="text" defaultValue="Jane Doe" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm" />
+                  <input type="text" defaultValue="Jane Doe" className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email Address</label>
-                  <input type="email" defaultValue="jane.doe@example.com" className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm" />
+                  <input type="email" defaultValue="jane.doe@example.com" className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[13.5px] text-slate-800 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm" />
                 </div>
               </div>
             </div>
@@ -56,19 +70,19 @@ const Settings = () => {
               <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Bio</label>
               <textarea 
                 defaultValue="Product Manager focused on agile workflows and team efficiency."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-[13.5px] text-slate-800 min-h-[90px] resize-none focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-sm"
+                className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[13.5px] text-slate-800 min-h-[90px] resize-none focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all shadow-sm"
               ></textarea>
             </div>
 
             <div className="flex justify-end border-t border-slate-100 pt-5 mt-2">
-              <button className="px-5 py-2 bg-indigo-600 text-white text-[13px] font-medium rounded-md hover:bg-indigo-700 transition-colors shadow-sm">
+              <button className="px-5 py-2 bg-indigo-600 text-white text-[13px] font-medium rounded-xl hover:bg-indigo-700 transition-colors shadow-sm">
                 Save Changes
               </button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Appearance Card */}
-          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-[16px] font-semibold text-slate-800 mb-1">Appearance</h2>
             <p className="text-[13px] text-slate-500 mb-6">Customize the visual theme of TaskFlow.</p>
             
@@ -110,7 +124,7 @@ const Settings = () => {
           </div>
 
           {/* Notification Preferences */}
-          <div className="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-[16px] font-semibold text-slate-800 mb-6">Notification Preferences</h2>
             
             <div className="space-y-4 max-w-2xl">
