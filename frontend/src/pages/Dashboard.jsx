@@ -173,76 +173,86 @@ const Dashboard = () => {
   const doneCount = getColumnTasks("done").length;
 
   return (
-    <div className="w-full max-w-[1520px] mx-auto space-y-5">
+    <div className="w-full space-y-4 md:space-y-5">
       {/* ============================================
           HEADER SECTION
           ============================================ */}
-      <div className="rounded-3xl border border-slate-200/80 bg-white/80 shadow-sm p-4 md:p-6 lg:p-7">
+      <section className="rounded-2xl border border-slate-200/70 bg-white/85 shadow-[0_10px_30px_rgba(15,23,42,0.04)] p-4 md:p-5 lg:p-6">
         {/* Breadcrumbs */}
-        <div className="text-[13px] text-slate-500 mb-3 font-medium flex items-center gap-1.5">
+        <div className="text-[12px] text-slate-500 mb-2.5 font-medium flex items-center gap-1.5">
           <span className="hover:text-slate-800 cursor-pointer transition-colors">Projects</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           <span className="hover:text-slate-800 cursor-pointer transition-colors">2024 Initiatives</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
         </div>
 
-        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 tracking-tight leading-tight">
               Welcome back, {user?.name?.split(" ")[0] || "there"}
             </h1>
-            <p className="text-sm text-slate-500 mt-1.5">
+            <p className="text-sm text-slate-500 mt-1">
               You have {tasks.length} tasks across your active board.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 mt-2 xl:mt-0">
+          <div className="flex flex-wrap items-center gap-2 mt-1 xl:mt-0">
             {/* Filter Buttons */}
-            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+            <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-[12px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <CircleDashed className="w-4 h-4 text-slate-400" />
               To Do: {todoCount}
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+            <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-[12px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <Clock3 className="w-4 h-4 text-slate-400" />
               In Progress: {inProgressCount}
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-lg text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
+            <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-[12px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <CalendarClock className="w-4 h-4 text-slate-400" />
               Review: {doneCount}
             </button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+        <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-slate-200/80 bg-white/80 p-3.5 shadow-sm">
           <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Total Tasks</p>
-          <div className="mt-3 flex items-center justify-between">
-            <h3 className="text-3xl font-bold text-slate-900">{tasks.length}</h3>
+          <div className="mt-2.5 flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-slate-900">{tasks.length}</h3>
             <FolderKanban className="w-5 h-5 text-indigo-500" />
           </div>
         </motion.div>
-        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+        <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-slate-200/80 bg-white/80 p-3.5 shadow-sm">
           <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Active Sprint</p>
-          <div className="mt-3 flex items-center justify-between">
-            <h3 className="text-3xl font-bold text-slate-900">{inProgressCount}</h3>
+          <div className="mt-2.5 flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-slate-900">{inProgressCount}</h3>
             <Clock3 className="w-5 h-5 text-violet-500" />
           </div>
         </motion.div>
-        <motion.div whileHover={{ y: -2 }} className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+        <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-slate-200/80 bg-white/80 p-3.5 shadow-sm">
           <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Completed</p>
-          <div className="mt-3 flex items-center justify-between">
-            <h3 className="text-3xl font-bold text-slate-900">{doneCount}</h3>
+          <div className="mt-2.5 flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-slate-900">{doneCount}</h3>
             <CalendarClock className="w-5 h-5 text-emerald-500" />
           </div>
         </motion.div>
-      </div>
+        <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-slate-200/80 bg-white/80 p-3.5 shadow-sm">
+          <p className="text-xs font-semibold uppercase text-slate-500 tracking-wide">Focus Score</p>
+          <div className="mt-2.5 flex items-center justify-between">
+            <h3 className="text-2xl font-semibold text-slate-900">
+              {tasks.length ? Math.min(98, 60 + inProgressCount * 4) : 0}%
+            </h3>
+            <CircleDashed className="w-5 h-5 text-sky-500" />
+          </div>
+        </motion.div>
+      </section>
 
       {/* ============================================
           KANBAN BOARD
           ============================================ */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-4 md:gap-5 items-start overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-px-4 custom-scrollbar-horizontal">
+        <section className="rounded-2xl bg-slate-100/40 border border-slate-200/60 p-2.5 md:p-3.5">
+          <div className="flex gap-3 md:gap-4 items-start overflow-x-auto pb-2.5 pt-0.5 snap-x snap-mandatory custom-scrollbar-horizontal">
           {COLUMNS.map((col) => (
             <Column
               key={col.id}
@@ -255,7 +265,8 @@ const Dashboard = () => {
               onAddTask={() => openCreateModal(col.id)}
             />
           ))}
-        </div>
+          </div>
+        </section>
       </DragDropContext>
 
       {/* ============================================

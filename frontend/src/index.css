@@ -121,15 +121,15 @@ body {
   flex: 1;
   overflow-y: auto;
   border-radius: 0.5rem;
-  padding-bottom: 3rem; /* Space for add button */
+  padding-bottom: 1rem;
   transition: background-color 0.2s ease;
 }
 
 /* Active drop zone highlight */
 .drop-zone-active {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
   border-radius: 0.5rem;
-  outline: 2px dashed #cbd5e1;
+  outline: 1px dashed #cbd5e1;
   outline-offset: -2px;
 }
 

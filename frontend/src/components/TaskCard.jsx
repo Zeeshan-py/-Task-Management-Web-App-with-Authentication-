@@ -71,7 +71,7 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      className={`group relative bg-white/90 backdrop-blur rounded-2xl p-4 shadow-sm border border-slate-200 hover:shadow-lg hover:shadow-indigo-100/60 hover:border-indigo-200 transition-all cursor-pointer min-h-[174px] ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}
+      className={`group relative bg-white rounded-xl p-3.5 shadow-sm border border-slate-200/90 hover:shadow-md hover:shadow-slate-200/70 hover:border-slate-300 transition-all cursor-pointer min-h-[156px] ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}
     >
       {/* ---- Edit/Delete Hover Actions ---- */}
       {!isDragging && (
@@ -86,37 +86,37 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
       )}
 
       {/* ---- Top Row: Tags & Priority ---- */}
-      <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+      <div className="flex items-center gap-1.5 mb-2 flex-wrap">
         {/* Priority Badge */}
-        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${priority.bgColor} ${priority.textColor}`}>
+        <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wider ${priority.bgColor} ${priority.textColor}`}>
             <span>{priority.icon}</span> {priority.label}
         </span>
         
         {/* Category Tag */}
-        <span className={`inline-flex items-center px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${tagColor}`}>
+        <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[9.5px] font-bold uppercase tracking-wider ${tagColor}`}>
           {tagLabel}
         </span>
       </div>
 
       {/* ---- Title ---- */}
-      <h4 className="text-slate-900 font-semibold text-[14px] mb-1.5 leading-snug">
+      <h4 className="text-slate-900 font-semibold text-[13.5px] mb-1 leading-snug">
         {task.title}
       </h4>
 
       {/* ---- Description ---- */}
       {task.description ? (
-        <p className="text-slate-500 text-[12.5px] leading-relaxed mb-3 line-clamp-2">
+        <p className="text-slate-500 text-[12px] leading-relaxed mb-2.5 line-clamp-2">
           {task.description}
         </p>
       ) : (
-        <p className="text-slate-400 text-[12px] leading-relaxed mb-3 line-clamp-2">
+        <p className="text-slate-400 text-[11.5px] leading-relaxed mb-2.5 line-clamp-2">
           No description provided yet.
         </p>
       )}
 
       {/* ---- Progress Bar (Only for In Progress) ---- */}
       {columnId === "in-progress" && (
-        <div className="mb-3.5">
+        <div className="mb-2.5">
           <div className="flex justify-between text-[11px] text-slate-500 mb-1 font-medium">
             <span>Progress</span>
             <span>{progressValue}%</span>
@@ -128,8 +128,8 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
       )}
 
       {/* ---- Footer: Metrics & Avatars ---- */}
-      <div className="flex items-center justify-between mt-auto pt-1">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between mt-auto pt-0.5">
+        <div className="flex items-center gap-2.5">
           {/* Due Date */}
           {dueDate && (
             <div className={`flex items-center gap-1 text-[11.5px] font-medium ${dueDate.isOverdue ? "text-red-500" : "text-slate-400"}`}>

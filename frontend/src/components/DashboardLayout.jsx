@@ -23,7 +23,7 @@ const DashboardLayout = ({ children }) => {
       
       <div
         className={`flex-1 flex flex-col w-full transition-all duration-300 ease-in-out ${
-          isSidebarCollapsed ? "md:ml-[88px]" : "md:ml-[240px]"
+          isSidebarCollapsed ? "md:ml-[78px]" : "md:ml-[224px]"
         }`}
       >
         <Topbar
@@ -33,8 +33,10 @@ const DashboardLayout = ({ children }) => {
             setIsSidebarCollapsed((prev) => !prev)
           }
         />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[radial-gradient(circle_at_top,#eef2ff_0%,#f8fafc_40%,#f8fafc_100%)] p-4 md:p-6 lg:p-8">
-          {children}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[radial-gradient(circle_at_top,#eef2ff_0%,#f8fafc_38%,#f8fafc_100%)] px-3 py-4 sm:px-4 md:px-6 md:py-6 lg:px-8">
+          <div className="w-full max-w-[1400px] mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>
