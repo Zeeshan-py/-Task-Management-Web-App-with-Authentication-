@@ -28,7 +28,7 @@ Built as part of the **TEYZIX Core Internship Assignment** with focus on:
 - https://hookup-flow-production.up.railway.app/
 
 ### GitHub Repository
-- https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-
+- https://github.com/Zeeshan-py/Hookup-Flow
 
 ---
 
@@ -135,9 +135,9 @@ HookupFlow/
 ## 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-.git
+git clone https://github.com/Zeeshan-py/Hookup-Flow.git
 
-cd "-Task-Management-Web-App-with-Authentication-"
+cd "Hookup-Flow"
 ```
 
 ---
@@ -356,4 +356,4 @@ If you like this project:
 - https://github.com/Zeeshan-py
 
 ### Project Repository
-- https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-
+- https://github.com/Zeeshan-py/Hookup-Flow
