@@ -1,4 +1,9 @@
 const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
+  const hashValue = [...String(task._id || task.title || "task")].reduce(
+    (acc, char) => acc + char.charCodeAt(0),
+    0
+  );
+
   // ------------------------------------------
   // PRIORITY CONFIG (Matched to Design)
   // ------------------------------------------
@@ -26,19 +31,20 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const priority = priorityConfig[task.priority] || priorityConfig.medium;
 
   // ------------------------------------------
-  // DUMMY DATA FOR VISUAL FIDELITY (Matches Image 2)
   // ------------------------------------------
-  // We generate consistent dummy data based on the task ID
-  // so it doesn't change on every render.
+  // Lightweight deterministic display values
+  // ------------------------------------------
+  // Derive UI-only values from task id so cards do not visually
+  // jump on every render (Math.random was causing inconsistency).
   const isDesign = task.title.toLowerCase().includes('design') || task.title.toLowerCase().includes('logo');
   const isMarketing = task.title.toLowerCase().includes('marketing') || task.title.toLowerCase().includes('seo');
   
   const tagLabel = isDesign ? "Design" : isMarketing ? "Marketing" : "Content";
   const tagColor = isDesign ? "bg-[#E0E7FF] text-[#4F46E5]" : isMarketing ? "bg-[#F3E8FF] text-[#9333EA]" : "bg-[#DBEAFE] text-[#2563EB]";
   
-  const progressValue = Math.floor(Math.random() * 40) + 40; // 40-80%
-  const checklistsDone = Math.floor(Math.random() * 3);
-  const checklistsTotal = checklistsDone + Math.floor(Math.random() * 3) + 1;
+  const progressValue = 45 + (hashValue % 45); // 45-89%
+  const checklistsTotal = 2 + (hashValue % 4); // 2-5
+  const checklistsDone = hashValue % (checklistsTotal + 1);
 
   // ------------------------------------------
   // DUE DATE FORMATTING
@@ -60,7 +66,7 @@ const TaskCard = ({ task, onEdit, onDelete, isDragging = false, columnId }) => {
   const dueDate = formatDueDate(task.dueDate);
 
   return (
-    <div className={`group relative bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all cursor-pointer ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}>
+    <div className={`group relative bg-white rounded-xl p-4 shadow-sm border border-slate-200 hover:shadow-md hover:border-slate-300 transition-all cursor-pointer min-h-[168px] ${isDragging ? "rotate-2 scale-105 shadow-xl opacity-90 border-indigo-300" : ""}`}>
       {/* ---- Edit/Delete Hover Actions ---- */}
       {!isDragging && (
         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-white/95 backdrop-blur p-1 rounded-md shadow-sm border border-slate-100">

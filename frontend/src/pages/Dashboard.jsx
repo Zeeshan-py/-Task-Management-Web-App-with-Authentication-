@@ -2,7 +2,7 @@
 // Dashboard Page - Full Kanban Board + Drag & Drop
 // ==============================================
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DragDropContext } from "@hello-pangea/dnd";
 import { useAuth } from "../context/AuthContext";
 import { getTasks, createTask, updateTask, deleteTask, moveTask } from "../services/api";
@@ -166,12 +166,16 @@ const Dashboard = () => {
 
   if (loading) return <Loader />;
 
+  const todoCount = getColumnTasks("todo").length;
+  const inProgressCount = getColumnTasks("in-progress").length;
+  const doneCount = getColumnTasks("done").length;
+
   return (
-    <div className="w-full max-w-[1400px] mx-auto">
+    <div className="w-full max-w-[1450px] mx-auto">
       {/* ============================================
           HEADER SECTION
           ============================================ */}
-      <div className="mb-6 md:mb-8">
+      <div className="mb-6 md:mb-8 rounded-2xl border border-slate-200/70 bg-white/80 shadow-sm p-4 md:p-6">
         {/* Breadcrumbs */}
         <div className="text-[13px] text-slate-500 mb-2 font-medium flex items-center gap-1.5">
           <span className="hover:text-slate-800 cursor-pointer transition-colors">Projects</span>
@@ -181,23 +185,28 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
-            Marketing Launch<br className="hidden xl:block" /> 2024
-          </h1>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+              Welcome back, {user?.name?.split(" ")[0] || "there"}
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              You have {tasks.length} tasks across your active board.
+            </p>
+          </div>
 
           <div className="flex flex-wrap items-center gap-2.5 mt-2 xl:mt-0">
             {/* Filter Buttons */}
             <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
-              Status
+              To Do: {todoCount}
             </button>
             <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Assignee
+              In Progress: {inProgressCount}
             </button>
             <button className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-md text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
-              Priority
+              Review: {doneCount}
             </button>
 
             {/* View Toggles */}

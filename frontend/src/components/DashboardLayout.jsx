@@ -16,9 +16,9 @@ const DashboardLayout = ({ children }) => {
     <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       
-      <div className="flex-1 flex flex-col w-full md:ml-60 md:w-[calc(100%-15rem)] transition-all duration-300 ease-in-out">
+      <div className="flex-1 flex flex-col w-full md:ml-60 transition-all duration-300 ease-in-out">
         <Topbar onMenuClick={() => setIsSidebarOpen(true)} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-4 md:p-6 lg:p-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-b from-slate-50 to-slate-100/70 p-4 md:p-6 lg:p-8">
           {children}
         </main>
       </div>

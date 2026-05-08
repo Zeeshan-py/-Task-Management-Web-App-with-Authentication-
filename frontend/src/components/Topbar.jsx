@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 
 const Topbar = ({ onMenuClick }) => {
   const { user } = useAuth();
+  const userInitial = user?.name?.trim()?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-40 gap-4">
+    <header className="bg-white/90 backdrop-blur-md border-b border-slate-200/80 h-16 flex items-center justify-between px-4 md:px-6 sticky top-0 z-40 gap-4 shadow-sm">
       {/* Mobile Hamburger */}
       <button 
         onClick={onMenuClick}
@@ -15,7 +16,7 @@ const Topbar = ({ onMenuClick }) => {
       </button>
 
       {/* Search Bar */}
-      <div className="flex-1 max-w-md min-w-0 lg:max-w-lg">
+      <div className="flex-1 max-w-sm min-w-0 lg:max-w-xl">
         <div className="relative group">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -23,7 +24,7 @@ const Topbar = ({ onMenuClick }) => {
           <input 
             type="text" 
             placeholder="Search tasks, projects..." 
-            className="w-full pl-9 pr-3 py-1.5 bg-slate-100/80 border border-transparent rounded-md text-[13px] text-slate-800 placeholder-slate-400 focus:bg-white focus:border-indigo-500/30 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none truncate shadow-sm"
+            className="w-full pl-9 pr-3 py-2 bg-slate-100/80 border border-transparent rounded-lg text-[13px] text-slate-800 placeholder-slate-400 focus:bg-white focus:border-indigo-500/30 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none truncate shadow-sm"
           />
         </div>
       </div>
@@ -50,18 +51,18 @@ const Topbar = ({ onMenuClick }) => {
         </div>
 
         {/* Create Task Button (Icon only on mobile) */}
-        <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm py-1.5 px-3 md:px-3.5 text-[13px] rounded-md transition-all hidden sm:flex items-center gap-1.5">
+        <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm py-2 px-3 md:px-3.5 text-[13px] rounded-lg transition-all hidden sm:flex items-center gap-1.5">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
           Create Task
         </button>
-        <button className="bg-indigo-600 text-white p-1.5 sm:hidden rounded-md flex items-center justify-center hover:bg-indigo-700 active:scale-95 transition-all">
+        <button className="bg-indigo-600 text-white p-1.5 sm:hidden rounded-lg flex items-center justify-center hover:bg-indigo-700 active:scale-95 transition-all">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
         </button>
 
         {/* User Profile */}
         {user ? (
-          <Link to="/profile" className="w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden border border-slate-200 cursor-pointer shadow-sm hover:ring-2 hover:ring-indigo-500/30 transition-all shrink-0 ml-1">
-             <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt={user.name} className="w-full h-full object-cover" />
+          <Link to="/profile" className="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border border-slate-200 cursor-pointer shadow-sm hover:ring-2 hover:ring-indigo-500/30 transition-all shrink-0 ml-1 bg-indigo-100 text-indigo-700 flex items-center justify-center font-semibold text-sm">
+             <span>{userInitial}</span>
           </Link>
         ) : (
           <Link to="/login" className="text-[13px] font-medium text-slate-600 hover:text-slate-900 shrink-0 ml-1">Login</Link>
