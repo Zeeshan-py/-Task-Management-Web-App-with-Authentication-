@@ -1,110 +1,359 @@
-# TaskFlow - Kanban SaaS Task Management
+# HookupFlow 🚀
 
-**TaskFlow** is a modern, production-ready full-stack MERN task management application with a premium "slate-and-indigo" SaaS aesthetic. It allows users to authenticate securely, create and manage tasks on a Kanban-style dashboard, and handle project details intuitively.
+### Modern MERN Stack SaaS Task Management Platform
 
-Designed and developed as part of **TEYZIX Core Internship Assignment 1**.
+HookupFlow is a modern full-stack MERN productivity and task management application inspired by professional SaaS platforms like Linear, Jira, and Notion.
 
-## 🚀 Tech Stack
+The platform allows users to:
+- Create and manage tasks
+- Organize workflow using Kanban boards
+- Authenticate securely with JWT
+- Manage projects professionally
+- Experience a premium responsive UI
 
-### Frontend
-- **React.js** (Bootstrapped with Vite)
-- **Tailwind CSS v4** (Modern utility-first styling with glassmorphism)
-- **React Router v6** (Client-side routing)
-- **Axios** (HTTP client with request interceptors)
-- **React Hot Toast** (Alerts & notifications)
-
-### Backend
-- **Node.js & Express.js**
-- **MongoDB** (Hosted on MongoDB Atlas)
-- **Mongoose** (ODM for MongoDB)
-- **JWT (JSON Web Tokens)** (Secure authentication)
-- **Helmet & Morgan** (Security headers and HTTP request logging)
-- **CORS** (Cross-Origin Resource Sharing)
+Built as part of the **TEYZIX Core Internship Assignment** with focus on:
+- Scalable architecture
+- Production deployment
+- Modern UI/UX
+- Secure backend APIs
 
 ---
 
-## ✨ Key Features
-- **Secure Authentication**: JWT-based auth with password hashing (bcryptjs) and protected React routes.
-- **Premium UI/UX**: Professional "slate and indigo" color palette with smooth hover states, responsive layouts, and glassmorphism elements.
-- **Kanban Board**: Organized, horizontally-scrollable responsive Kanban layout with distinct task cards.
-- **Robust API**: RESTful architecture featuring global error handling and intelligent request logging.
-- **Production-Ready configuration**: Configured for deployment with Netlify (frontend SPA routing) and Railway (backend Express server).
+## 🌐 Live Production Links
+
+### Frontend (Netlify)
+- https://hookupflow.netlify.app/
+
+### Backend API (Railway)
+- https://hookup-flow-production.up.railway.app/
+
+### GitHub Repository
+- https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-
 
 ---
 
-## 🛠️ Local Development Setup
+## ✨ Features
 
-### 1. Prerequisites
-- Node.js (v18+ recommended)
-- MongoDB account (Atlas or local)
-- Git
+### 🔐 Authentication System
+- JWT Authentication
+- Protected Routes
+- Persistent Login Sessions
+- Password Hashing using bcryptjs
+- Secure Middleware Architecture
 
-### 2. Clone the Repository
+### 📋 Advanced Kanban Board
+- Task Status Management
+- Organized Workflow Lanes
+- Responsive Task Cards
+- Real-Time UI Updates
+- Professional Dashboard Layout
+
+### 🎨 Premium SaaS UI
+- Modern Dark Theme
+- Glassmorphism Effects
+- Responsive Layouts
+- Smooth Hover Effects
+- Sidebar Navigation
+- Mobile Friendly Design
+
+### 📊 Dashboard & Analytics
+- Task Statistics
+- Sprint Overview
+- Team Pages
+- Analytics Dashboard
+- Productivity Insights
+
+### ⚡ Production Ready
+- Railway Backend Deployment
+- Netlify Frontend Deployment
+- CORS Configuration
+- Environment Variable Support
+- Secure API Architecture
+- Global Error Handling
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+- React.js
+- Vite
+- Tailwind CSS v4
+- React Router DOM
+- Axios
+- React Hot Toast
+- Lucide React Icons
+
+## Backend
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT Authentication
+- Helmet
+- Morgan
+- CORS
+
+---
+
+# 📁 Project Structure
+
+```bash
+HookupFlow/
+│
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── server.js
+│   │
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── App.jsx
+│   │
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
+```
+
+---
+
+# ⚙️ Local Development Setup
+
+## 1️⃣ Clone Repository
+
 ```bash
 git clone https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-.git
+
 cd "-Task-Management-Web-App-with-Authentication-"
 ```
 
-### 3. Backend Setup
+---
+
+## 2️⃣ Backend Setup
+
 ```bash
 cd backend
+
 npm install
 ```
-Create a `.env` file in the `backend/` directory:
+
+### Create `.env` inside backend folder
+
 ```env
 PORT=5000
+
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_super_secret_jwt_key
+
+JWT_SECRET=your_super_secret_key
+
 NODE_ENV=development
+
 FRONTEND_URL=http://localhost:3000
 ```
-Run the backend:
+
+### Run Backend
+
 ```bash
 npm run dev
 ```
 
-### 4. Frontend Setup
+### Backend runs on:
 ```bash
-# Open a new terminal
+http://localhost:5000
+```
+
+---
+
+## 3️⃣ Frontend Setup
+
+### Open New Terminal
+
+```bash
 cd frontend
+
 npm install
 ```
-Create a `.env` file in the `frontend/` directory (Optional for local dev as Vite proxies `/api` requests):
+
+### Create `.env` inside frontend folder
+
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
-Run the frontend:
+
+### Run Frontend
+
 ```bash
 npm run dev
 ```
-The app will be available at [http://localhost:3000](http://localhost:3000).
+
+### Frontend runs on:
+```bash
+http://localhost:3000
+```
 
 ---
 
-## 🌍 Production Deployment
+# 🚀 Production Deployment Guide
 
-This project is configured to deploy the Frontend on **Netlify** and the Backend on **Railway**.
+## 🔥 Backend Deployment (Railway)
 
-### Backend (Railway)
-1. Link your GitHub repository to a new Railway project.
-2. Select the `backend` folder as the root directory (or let it run via the `start` script).
-3. Add the required Environment Variables in the Railway dashboard:
-   - `NODE_ENV=production`
-   - `PORT=5000`
-   - `MONGO_URI=...` *(Note: The code dynamically parses and URL-encodes special characters in your password!)*
-   - `JWT_SECRET=...`
-   - `FRONTEND_URL=https://your-frontend-netlify-app.netlify.app`
+### Railway Settings
 
-### Frontend (Netlify)
-1. Link your GitHub repository to Netlify.
-2. Build Command: `npm run build`
-3. Publish directory: `dist`
-4. Base directory: `frontend`
-5. Add the required Environment Variables:
-   - `VITE_API_URL=https://your-backend-railway-app.up.railway.app/api`
-6. SPA routing is automatically handled via the included `public/_redirects` file.
+#### Root Directory
+```bash
+backend
+```
+
+#### Build Command
+```bash
+npm install
+```
+
+#### Start Command
+```bash
+npm start
+```
 
 ---
 
-## 🛡️ License
+## Railway Environment Variables
+
+```env
+NODE_ENV=production
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_super_secret_key
+
+FRONTEND_URL=https://hookupflow.netlify.app
+```
+
+---
+
+# 🌍 Frontend Deployment (Netlify)
+
+## Netlify Settings
+
+### Base Directory
+```bash
+frontend
+```
+
+### Build Command
+```bash
+npm run build
+```
+
+### Publish Directory
+```bash
+dist
+```
+
+---
+
+## Netlify Environment Variables
+
+```env
+VITE_API_URL=https://hookup-flow-production.up.railway.app/api
+```
+
+---
+
+# 🔄 SPA Redirect Support
+
+### Create File
+
+```bash
+frontend/public/_redirects
+```
+
+### Add This Code
+
+```bash
+/* /index.html 200
+```
+
+This fixes refresh issues in React Router when deployed on Netlify.
+
+---
+
+# 🛡️ Security Features
+
+- Helmet Security Headers
+- JWT Token Validation
+- Password Hashing
+- Environment Variable Protection
+- Protected API Middleware
+- Centralized Error Handling
+- Secure Authentication Flow
+
+---
+
+# 📸 Future Improvements
+
+- Drag & Drop Tasks
+- Real-Time Collaboration
+- Notifications System
+- Workspace Management
+- File Uploads
+- AI Productivity Assistant
+- Team Invitations
+
+---
+
+# 👨‍💻 Developer
+
+## Zeeshan Ahmad
+
+### Full Stack MERN Developer
+### Computer Engineering Student
+
+### Skills
+- MERN Stack
+- Next.js
+- TypeScript
+- MongoDB
+- Express.js
+- React.js
+- Node.js
+- Tailwind CSS
+- REST APIs
+
+---
+
+# 📜 License
+
 This project is licensed under the ISC License.
+
+---
+
+# ⭐ Support
+
+If you like this project:
+- Star the repository
+- Fork the project
+- Share feedback
+- Contribute improvements
+
+---
+
+# 📬 Contact
+
+### GitHub Profile
+- https://github.com/Zeeshan-py
+
+### Project Repository
+- https://github.com/Zeeshan-py/-Task-Management-Web-App-with-Authentication-
