@@ -26,6 +26,10 @@ const connectDB = async () => {
   try {
     let uri = process.env.MONGO_URI;
 
+    if (!uri) {
+      throw new Error("MONGO_URI is not configured");
+    }
+
     // Automatically URL encode the password if it contains special characters
     // Matches: (mongodb[+srv]://username:)(password)(@cluster...)
     const uriMatch = uri.match(/^(mongodb(?:\+srv)?:\/\/[^:]+:)(.*)(@[^@]+)$/);
@@ -41,11 +45,10 @@ const connectDB = async () => {
     }
 
     const conn = await mongoose.connect(uri);
-
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`[DB] MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error: ${error.message}`);
-    process.exit(1); // Exit with failure code
+    console.error(`[DB] Initial connection failed: ${error.message}`);
+    throw error;
   }
 };
 
