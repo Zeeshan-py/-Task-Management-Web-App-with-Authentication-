@@ -202,7 +202,7 @@ const TaskForm = ({ onSubmit, initialData = null, isLoading = false, onCancel })
         <button
           type="submit"
           disabled={isLoading || !formData.title.trim()}
-          className="px-5 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition-colors shadow-sm disabled:opacity-50"
+          className="px-5 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-950 rounded-xl transition-colors shadow-sm disabled:opacity-50"
         >
           {isLoading
             ? "Saving..."

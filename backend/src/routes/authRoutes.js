@@ -28,6 +28,8 @@ const {
   registerUser,
   loginUser,
   getProfile,
+  startOAuth,
+  handleOAuthCallback,
 } = require("../controllers/authController");
 
 // Import auth middleware
@@ -46,6 +48,8 @@ router.post("/register", registerUser);
 // @desc    Authenticate user and get JWT token
 // @access  Public
 router.post("/login", loginUser);
+router.get("/:provider(google|github)", startOAuth);
+router.get("/:provider(google|github)/callback", handleOAuthCallback);
 
 // ------------------------------------------
 // PRIVATE ROUTES (token required)

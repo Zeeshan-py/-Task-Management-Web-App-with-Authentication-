@@ -1,7 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { ArrowRight, LockKeyhole, Rows3 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { getOAuthUrl } from "../services/api";
+
+const GoogleIcon = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+  </svg>
+);
+
+const GitHubIcon = () => (
+  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path fillRule="evenodd" d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.35 6.84 9.71.5.09.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.22-3.37-1.22-.45-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.33 9.33 0 0 1 12 6.93c.85 0 1.71.12 2.51.35 1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.59.69.49A10.05 10.05 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z" clipRule="evenodd" />
+  </svg>
+);
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -11,18 +28,17 @@ const Register = () => {
   const { register, user } = useAuth();
   const navigate = useNavigate();
 
-  // If already logged in, redirect to dashboard
-  if (user) {
-    navigate("/dashboard", { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const result = await register(name, email, password);
-
     if (result.success) {
       navigate("/login");
     }
@@ -30,134 +46,120 @@ const Register = () => {
     setIsSubmitting(false);
   };
 
+  const handleSocialSignIn = (provider) => {
+    try {
+      window.location.href = getOAuthUrl(provider);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex">
-      {/* Left Panel - Dark / Branding */}
-      <div className="hidden lg:flex w-1/2 bg-[#0F172A] relative overflow-hidden flex-col justify-between p-12">
-        {/* Abstract Background Elements */}
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-[#6161FF]/20 to-transparent rounded-full blur-3xl mix-blend-screen pointer-events-none"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-tr from-[#0F172A] to-[#6161FF]/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-10 pointer-events-none" style={{ backgroundImage: 'repeating-linear-gradient(45deg, #64728B 0, #64728B 1px, transparent 0, transparent 50%)', backgroundSize: '20px 20px' }}></div>
-        
-        {/* Logo */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-gradient-to-tr from-[#FF00D9] to-[#6161FF] flex items-center justify-center">
-            <span className="text-white font-bold text-sm">TF</span>
-          </div>
-          <span className="text-white font-bold text-xl tracking-tight">TaskFlow</span>
+    <main className="auth-shell auth-shell--register">
+      <section className="auth-art-panel">
+        <Link to="/login" className="brand-lockup">
+          <span className="brand-mark">TF</span>
+          <span>TaskFlow</span>
+        </Link>
+
+        <div className="auth-art-copy">
+          <h1>Start with a board that already feels organized.</h1>
+          <p>Create your workspace, add the first task, and keep priorities visible from day one.</p>
         </div>
 
-        {/* Feature List Card */}
-        <div className="relative z-10 bg-[#1E293B]/60 backdrop-blur-md border border-[#334155]/50 p-8 rounded-2xl max-w-md mt-auto">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6161FF] to-[#FF00D9] flex items-center justify-center text-white">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-            </div>
-            <h3 className="text-xl font-semibold text-white">Scale with confidence</h3>
+        <div className="register-preview">
+          <div className="register-preview-row">
+            <Rows3 size={18} />
+            <span>Clean project lanes</span>
           </div>
-          
-          <ul className="space-y-4">
-            <li className="flex items-center gap-3 text-[#F1F5F9] text-sm">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Unlimited projects and workspaces
-            </li>
-            <li className="flex items-center gap-3 text-[#F1F5F9] text-sm">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Advanced roles and permissions
-            </li>
-            <li className="flex items-center gap-3 text-[#F1F5F9] text-sm">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Enterprise-grade security standards
-            </li>
-          </ul>
+          <div className="register-preview-row">
+            <LockKeyhole size={18} />
+            <span>JWT protected workspace</span>
+          </div>
+          <div className="register-preview-metric">
+            <strong>3</strong>
+            <span>default workflow stages</span>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white">
-        <div className="w-full max-w-md">
-          {/* Mobile Logo (hidden on desktop) */}
-          <div className="lg:hidden flex items-center gap-3 mb-10">
-            <div className="w-8 h-8 rounded bg-gradient-to-tr from-[#FF00D9] to-[#6161FF] flex items-center justify-center">
-              <span className="text-white font-bold text-sm">TF</span>
-            </div>
-            <span className="text-slate-900 font-bold text-xl tracking-tight">TaskFlow</span>
+      <section className="auth-form-panel">
+        <div className="auth-card">
+          <div className="auth-mobile-brand">
+            <span className="brand-mark">TF</span>
+            <span>TaskFlow</span>
           </div>
 
-          <h2 className="text-3xl font-bold text-[#0F172A] mb-2">Create an account</h2>
-          <p className="text-[#64728B] mb-8 text-sm">Start your 14-day free trial. No credit card required.</p>
+          <div className="auth-heading">
+            <h2>Create account</h2>
+            <p>Use email, Google, or GitHub to enter your workspace.</p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-[#0F172A] mb-1.5">Full Name</label>
+          <div className="social-grid">
+            <button type="button" className="social-button" onClick={() => handleSocialSignIn("google")}>
+              <GoogleIcon />
+              Google
+            </button>
+            <button type="button" className="social-button" onClick={() => handleSocialSignIn("github")}>
+              <GitHubIcon />
+              GitHub
+            </button>
+          </div>
+
+          <div className="auth-divider"><span>or create with email</span></div>
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            <label>
+              <span>Full name</span>
               <input
-                id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Morgan"
                 required
-                className="input-field"
               />
-            </div>
+            </label>
 
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[#0F172A] mb-1.5">Work Email</label>
+            <label>
+              <span>Email address</span>
               <input
-                id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@company.com"
                 required
-                className="input-field"
               />
-            </div>
+            </label>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[#0F172A] mb-1.5">Create Password</label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Min. 8 characters"
-                  required
-                  minLength={6}
-                  className="input-field pr-10"
-                />
-                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64728B] hover:text-[#0F172A]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
-                </button>
-              </div>
-            </div>
+            <label>
+              <span>Password</span>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 6 characters"
+                minLength={6}
+                required
+              />
+            </label>
 
-            <div className="flex items-start pt-2 pb-4">
-              <input id="terms" type="checkbox" required className="mt-1 w-4 h-4 text-[#6161FF] border-[#CBD5E1] rounded focus:ring-[#6161FF]" />
-              <label htmlFor="terms" className="ml-2 block text-sm text-[#64728B]">
-                I agree to the <a href="#" className="text-[#6161FF] hover:underline">Terms and Conditions</a> and <a href="#" className="text-[#6161FF] hover:underline">Privacy Policy</a>.
-              </label>
-            </div>
+            <label className="checkbox-row checkbox-row--terms">
+              <input type="checkbox" required />
+              <span>I agree to the terms and privacy policy.</span>
+            </label>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[#9C27B0] bg-gradient-to-r from-[#6161FF] to-[#FF00D9] text-white py-3 rounded-lg font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
-            >
-              {isSubmitting ? "Creating Account..." : "Create Account"}
+            <button type="submit" disabled={isSubmitting} className="primary-action">
+              {isSubmitting ? "Creating account..." : "Create account"}
+              <ArrowRight size={17} />
             </button>
           </form>
 
-          <p className="text-center text-[#0F172A] text-sm mt-8">
-            Already have an account?{" "}
-            <Link to="/login" className="text-[#6161FF] font-medium hover:underline">
-              Log in
-            </Link>
+          <p className="auth-switch">
+            Already have an account? <Link to="/login">Sign in</Link>
           </p>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

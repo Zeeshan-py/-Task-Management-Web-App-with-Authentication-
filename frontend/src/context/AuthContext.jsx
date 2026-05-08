@@ -14,7 +14,7 @@
 // Any component can access these via useAuth() hook.
 // ==============================================
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { loginUser as loginAPI, registerUser as registerAPI } from "../services/api";
 import toast from "react-hot-toast";
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   // ------------------------------------------
   const register = async (name, email, password) => {
     try {
-      const { data } = await registerAPI({ name, email, password });
+      await registerAPI({ name, email, password });
 
       toast.success("Account created successfully! Please login.");
       return { success: true };
@@ -97,6 +97,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const completeSocialLogin = useCallback(({ token, user: nextUser }) => {
+    setUser(nextUser);
+    localStorage.setItem("user", JSON.stringify(nextUser));
+    localStorage.setItem("token", token);
+    toast.success(`Welcome back, ${nextUser.name}!`);
+  }, []);
+
   // ------------------------------------------
   // 6. LOGOUT FUNCTION
   // ------------------------------------------
@@ -111,7 +118,7 @@ export const AuthProvider = ({ children }) => {
   // 7. PROVIDE VALUES TO CHILDREN
   // ------------------------------------------
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, completeSocialLogin }}>
       {children}
     </AuthContext.Provider>
   );

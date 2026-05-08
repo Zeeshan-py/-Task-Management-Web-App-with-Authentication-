@@ -72,6 +72,17 @@ const userSchema = new mongoose.Schema(
       // Admin role should be assigned manually or
       // through a separate admin endpoint.
     },
+
+    authProvider: {
+      type: String,
+      enum: ["local", "google", "github"],
+      default: "local",
+    },
+
+    providerId: {
+      type: String,
+      trim: true,
+    },
   },
   {
     // ------------------------------------------

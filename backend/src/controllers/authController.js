@@ -22,6 +22,79 @@ const asyncHandler = require("../utils/asyncHandler");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 
+const getServerBaseUrl = (req) =>
+  process.env.BACKEND_URL || `${req.protocol}://${req.get("host")}`;
+
+const getClientRedirectUrl = () =>
+  process.env.FRONTEND_URL || "http://localhost:5173";
+
+const requireOAuthConfig = (provider) => {
+  const upperProvider = provider.toUpperCase();
+  const clientId = process.env[`${upperProvider}_CLIENT_ID`];
+  const clientSecret = process.env[`${upperProvider}_CLIENT_SECRET`];
+
+  if (!clientId || !clientSecret) {
+    const error = new Error(
+      `${provider} sign in is not configured. Add ${upperProvider}_CLIENT_ID and ${upperProvider}_CLIENT_SECRET to the backend environment.`
+    );
+    error.statusCode = 503;
+    throw error;
+  }
+
+  return { clientId, clientSecret };
+};
+
+const redirectWithError = (res, message) => {
+  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl());
+  redirectUrl.searchParams.set("error", message);
+  return res.redirect(redirectUrl.toString());
+};
+
+const redirectWithUser = (res, user) => {
+  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl());
+  const token = generateToken(user._id);
+  redirectUrl.searchParams.set("token", token);
+  redirectUrl.searchParams.set(
+    "user",
+    Buffer.from(
+      JSON.stringify({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      })
+    ).toString("base64url")
+  );
+  return res.redirect(redirectUrl.toString());
+};
+
+const upsertOAuthUser = async ({ provider, providerId, name, email }) => {
+  if (!email) {
+    const error = new Error("The provider did not return a verified email address.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  let user = await User.findOne({ email });
+
+  if (user) {
+    if (!user.providerId) {
+      user.providerId = providerId;
+    }
+    user.authProvider = user.authProvider || provider;
+    await user.save();
+    return user;
+  }
+
+  return User.create({
+    name: name || email.split("@")[0],
+    email,
+    password: `oauth-${provider}-${providerId}-${Date.now()}`,
+    authProvider: provider,
+    providerId,
+  });
+};
+
 // ------------------------------------------
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -170,8 +243,151 @@ const getProfile = asyncHandler(async (req, res) => {
   });
 });
 
+const startOAuth = asyncHandler(async (req, res) => {
+  const { provider } = req.params;
+  let clientId;
+
+  try {
+    ({ clientId } = requireOAuthConfig(provider));
+  } catch (configError) {
+    return redirectWithError(res, configError.message);
+  }
+
+  const callbackUrl = `${getServerBaseUrl(req)}/api/auth/${provider}/callback`;
+
+  if (provider === "google") {
+    const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("redirect_uri", callbackUrl);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("scope", "openid email profile");
+    authUrl.searchParams.set("prompt", "select_account");
+    return res.redirect(authUrl.toString());
+  }
+
+  if (provider === "github") {
+    const authUrl = new URL("https://github.com/login/oauth/authorize");
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("redirect_uri", callbackUrl);
+    authUrl.searchParams.set("scope", "read:user user:email");
+    return res.redirect(authUrl.toString());
+  }
+
+  res.status(404);
+  throw new Error("Unsupported OAuth provider");
+});
+
+const handleOAuthCallback = asyncHandler(async (req, res) => {
+  const { provider } = req.params;
+  const { code, error } = req.query;
+
+  if (error) {
+    return redirectWithError(res, `${provider} sign in was cancelled.`);
+  }
+
+  if (!code) {
+    return redirectWithError(res, "Missing authorization code.");
+  }
+
+  try {
+    const { clientId, clientSecret } = requireOAuthConfig(provider);
+    const callbackUrl = `${getServerBaseUrl(req)}/api/auth/${provider}/callback`;
+
+    if (provider === "google") {
+      const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          code,
+          client_id: clientId,
+          client_secret: clientSecret,
+          redirect_uri: callbackUrl,
+          grant_type: "authorization_code",
+        }),
+      });
+
+      const tokenData = await tokenResponse.json();
+      if (!tokenResponse.ok) {
+        throw new Error(tokenData.error_description || "Google token exchange failed.");
+      }
+
+      const profileResponse = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+        headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      });
+      const profile = await profileResponse.json();
+      if (!profileResponse.ok) {
+        throw new Error("Google profile lookup failed.");
+      }
+
+      const user = await upsertOAuthUser({
+        provider: "google",
+        providerId: profile.sub,
+        name: profile.name,
+        email: profile.email,
+      });
+
+      return redirectWithUser(res, user);
+    }
+
+    if (provider === "github") {
+      const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code,
+          client_id: clientId,
+          client_secret: clientSecret,
+          redirect_uri: callbackUrl,
+        }),
+      });
+
+      const tokenData = await tokenResponse.json();
+      if (!tokenResponse.ok || tokenData.error) {
+        throw new Error(tokenData.error_description || "GitHub token exchange failed.");
+      }
+
+      const [profileResponse, emailsResponse] = await Promise.all([
+        fetch("https://api.github.com/user", {
+          headers: { Authorization: `Bearer ${tokenData.access_token}` },
+        }),
+        fetch("https://api.github.com/user/emails", {
+          headers: { Authorization: `Bearer ${tokenData.access_token}` },
+        }),
+      ]);
+
+      const profile = await profileResponse.json();
+      const emails = await emailsResponse.json();
+      if (!profileResponse.ok || !emailsResponse.ok) {
+        throw new Error("GitHub profile lookup failed.");
+      }
+
+      const primaryEmail =
+        emails.find((item) => item.primary && item.verified)?.email ||
+        emails.find((item) => item.verified)?.email;
+
+      const user = await upsertOAuthUser({
+        provider: "github",
+        providerId: String(profile.id),
+        name: profile.name || profile.login,
+        email: primaryEmail,
+      });
+
+      return redirectWithUser(res, user);
+    }
+
+    return redirectWithError(res, "Unsupported OAuth provider.");
+  } catch (callbackError) {
+    return redirectWithError(res, callbackError.message || "Social sign in failed.");
+  }
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
+  startOAuth,
+  handleOAuthCallback,
 };

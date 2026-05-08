@@ -14,6 +14,7 @@ const isDev = import.meta.env.DEV;
 // In production, never fallback to "/api" because Netlify won't proxy
 // backend routes unless explicitly configured. This avoids silent 404s.
 const baseURL = rawApiUrl || (isDev ? "/api" : "");
+export const API_BASE_URL = baseURL;
 
 if (!baseURL) {
   console.error(
@@ -69,6 +70,15 @@ API.interceptors.request.use(
 export const registerUser = (userData) => API.post("/auth/register", userData);
 
 export const loginUser = (userData) => API.post("/auth/login", userData);
+
+export const getOAuthUrl = (provider) => {
+  if (!baseURL) {
+    throw new Error(
+      "API is not configured. Set VITE_API_URL to your backend URL ending with /api."
+    );
+  }
+  return `${baseURL.replace(/\/$/, "")}/auth/${provider}`;
+};
 
 export const getProfile = () => API.get("/auth/profile");
 

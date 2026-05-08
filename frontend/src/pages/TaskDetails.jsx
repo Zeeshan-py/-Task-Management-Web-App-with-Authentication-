@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const TaskDetails = () => {
-  const { id } = useParams();
-
   // Dummy data matching Image 1
   const [subtasks, setSubtasks] = useState([
     { id: 1, text: "Review competitor branding", completed: true },

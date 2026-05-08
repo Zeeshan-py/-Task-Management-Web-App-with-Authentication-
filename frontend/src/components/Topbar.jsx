@@ -13,9 +13,12 @@ import { motion } from "framer-motion";
 const Topbar = ({ onMenuClick, isSidebarCollapsed, onToggleSidebarCollapse }) => {
   const { user } = useAuth();
   const userInitial = user?.name?.trim()?.charAt(0)?.toUpperCase() || "U";
+  const openCreateTask = () => {
+    window.dispatchEvent(new CustomEvent("taskflow:create-task"));
+  };
 
   return (
-    <header className="bg-white/70 backdrop-blur-xl border-b border-white/80 h-14 md:h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 sticky top-0 z-40 gap-3 shadow-[0_6px_24px_rgba(15,23,42,0.04)]">
+    <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200 h-14 md:h-16 flex items-center justify-between px-3 sm:px-4 md:px-6 sticky top-0 z-40 gap-3 shadow-sm">
       {/* Mobile Hamburger */}
       <button 
         onClick={onMenuClick}
@@ -60,12 +63,13 @@ const Topbar = ({ onMenuClick, isSidebarCollapsed, onToggleSidebarCollapse }) =>
         <motion.button
           whileHover={{ y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium shadow-sm py-1.5 px-3 text-[12.5px] rounded-lg transition-all hidden sm:flex items-center gap-1.5"
+          onClick={openCreateTask}
+          className="bg-slate-900 hover:bg-slate-950 text-white font-semibold shadow-sm py-1.5 px-3 text-[12.5px] rounded-lg transition-all hidden sm:flex items-center gap-1.5"
         >
           <Plus className="w-3.5 h-3.5" />
           Create Task
         </motion.button>
-        <button className="bg-indigo-600 text-white p-1.5 sm:hidden rounded-lg flex items-center justify-center hover:bg-indigo-700 active:scale-95 transition-all">
+        <button onClick={openCreateTask} className="bg-slate-900 text-white p-1.5 sm:hidden rounded-lg flex items-center justify-center hover:bg-slate-950 active:scale-95 transition-all">
           <Plus className="w-4 h-4" />
         </button>
 

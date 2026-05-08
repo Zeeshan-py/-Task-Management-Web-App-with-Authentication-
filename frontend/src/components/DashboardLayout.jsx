@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }) => {
   }, [location]);
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-[#f6f8fb] overflow-hidden font-sans">
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
@@ -33,7 +33,7 @@ const DashboardLayout = ({ children }) => {
             setIsSidebarCollapsed((prev) => !prev)
           }
         />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[radial-gradient(circle_at_top,#eef2ff_0%,#f8fafc_38%,#f8fafc_100%)] px-3 py-4 sm:px-4 md:px-6 md:py-6 lg:px-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#f6f8fb] px-3 py-4 sm:px-4 md:px-6 md:py-6 lg:px-8">
           <div className="w-full max-w-[1400px] mx-auto">
             {children}
           </div>

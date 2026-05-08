@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import TaskDetails from "./pages/TaskDetails";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import AuthCallback from "./pages/AuthCallback";
 
 const App = () => {
   return (
@@ -47,6 +48,7 @@ const App = () => {
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
 
         {/* Protected Routes */}
         <Route

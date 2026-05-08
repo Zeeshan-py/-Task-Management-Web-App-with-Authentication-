@@ -48,6 +48,12 @@ const Dashboard = () => {
   const [editingTask, setEditingTask] = useState(null);
   const [defaultStatusForNewTask, setDefaultStatusForNewTask] = useState("todo");
 
+  const openCreateModal = useCallback((status = "todo") => {
+    setEditingTask(null);
+    setDefaultStatusForNewTask(status);
+    setIsModalOpen(true);
+  }, []);
+
   // ------------------------------------------
   // FETCH ALL TASKS
   // ------------------------------------------
@@ -55,8 +61,8 @@ const Dashboard = () => {
     try {
       const { data } = await getTasks();
       setTasks(data.data);
-    } catch (error) {
-      console.error("Failed to fetch tasks:", error);
+    } catch {
+      console.error("Failed to fetch tasks");
       toast.error("Failed to load tasks");
     } finally {
       setLoading(false);
@@ -66,6 +72,12 @@ const Dashboard = () => {
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
+
+  useEffect(() => {
+    const handleCreateTask = () => openCreateModal("todo");
+    window.addEventListener("taskflow:create-task", handleCreateTask);
+    return () => window.removeEventListener("taskflow:create-task", handleCreateTask);
+  }, [openCreateModal]);
 
   // ------------------------------------------
   // SEPARATE TASKS BY STATUS
@@ -103,22 +115,13 @@ const Dashboard = () => {
 
       try {
         await moveTask(draggableId, newStatus);
-      } catch (error) {
+      } catch {
         setTasks(previousTasks);
         toast.error("Failed to move task");
       }
     },
     [tasks]
   );
-
-  // ------------------------------------------
-  // MODAL HANDLERS
-  // ------------------------------------------
-  const openCreateModal = (status = "todo") => {
-    setEditingTask(null);
-    setDefaultStatusForNewTask(status);
-    setIsModalOpen(true);
-  };
 
   const openEditModal = (task) => {
     setEditingTask(task);
@@ -145,7 +148,7 @@ const Dashboard = () => {
       }
       closeModal();
       await fetchTasks();
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong");
     } finally {
       setSaving(false);
@@ -161,7 +164,7 @@ const Dashboard = () => {
       await deleteTask(taskId);
       toast.success("Task deleted successfully!");
       await fetchTasks();
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete task");
     }
   };
@@ -177,7 +180,7 @@ const Dashboard = () => {
       {/* ============================================
           HEADER SECTION
           ============================================ */}
-      <section className="rounded-2xl border border-slate-200/70 bg-white/85 shadow-[0_10px_30px_rgba(15,23,42,0.04)] p-4 md:p-5 lg:p-6">
+      <section className="rounded-xl border border-slate-200 bg-white shadow-sm p-4 md:p-5 lg:p-6">
         {/* Breadcrumbs */}
         <div className="text-[12px] text-slate-500 mb-2.5 font-medium flex items-center gap-1.5">
           <span className="hover:text-slate-800 cursor-pointer transition-colors">Projects</span>
@@ -209,6 +212,12 @@ const Dashboard = () => {
             <button className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-[12px] font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
               <CalendarClock className="w-4 h-4 text-slate-400" />
               Review: {doneCount}
+            </button>
+            <button
+              onClick={() => openCreateModal("todo")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-lg text-[12px] font-semibold hover:bg-slate-950 transition-all shadow-sm"
+            >
+              Create Task
             </button>
           </div>
         </div>
@@ -251,7 +260,7 @@ const Dashboard = () => {
           KANBAN BOARD
           ============================================ */}
       <DragDropContext onDragEnd={onDragEnd}>
-        <section className="rounded-2xl bg-slate-100/40 border border-slate-200/60 p-2.5 md:p-3.5">
+        <section className="rounded-xl bg-white border border-slate-200 p-2.5 md:p-3.5 shadow-sm">
           <div className="flex gap-3 md:gap-4 items-start overflow-x-auto pb-2.5 pt-0.5 snap-x snap-mandatory custom-scrollbar-horizontal">
           {COLUMNS.map((col) => (
             <Column
