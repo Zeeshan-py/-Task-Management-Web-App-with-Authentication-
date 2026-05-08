@@ -8,11 +8,24 @@
 
 import axios from "axios";
 
+const rawApiUrl = import.meta.env.VITE_API_URL?.trim();
+const isDev = import.meta.env.DEV;
+
+// In production, never fallback to "/api" because Netlify won't proxy
+// backend routes unless explicitly configured. This avoids silent 404s.
+const baseURL = rawApiUrl || (isDev ? "/api" : "");
+
+if (!baseURL) {
+  console.error(
+    "[API] Missing VITE_API_URL in production. Set it in Netlify to your Railway backend URL, e.g. https://<service>.up.railway.app/api"
+  );
+}
+
 // Create a reusable Axios instance
 const API = axios.create({
-  // Use VITE_API_URL in production (e.g. from Netlify environment variables),
-  // otherwise fallback to "/api" which uses the Vite proxy in development.
-  baseURL: import.meta.env.VITE_API_URL || "/api",
+  // Development uses Vite proxy (/api -> localhost backend).
+  // Production must use VITE_API_URL (Railway URL ending with /api).
+  baseURL,
 });
 
 // ------------------------------------------
@@ -29,6 +42,14 @@ const API = axios.create({
 //   automatically includes the token.
 API.interceptors.request.use(
   (config) => {
+    if (!baseURL) {
+      return Promise.reject(
+        new Error(
+          "API is not configured. Set VITE_API_URL in Netlify to your Railway backend URL (ending with /api)."
+        )
+      );
+    }
+
     const token = localStorage.getItem("token");
 
     if (token) {
