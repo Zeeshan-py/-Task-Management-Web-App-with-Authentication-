@@ -21,9 +21,9 @@ const Sidebar = ({ isOpen, setIsOpen, isCollapsed }) => {
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Projects", path: "/dashboard", icon: FolderKanban },
-    { name: "Team", path: "/profile", icon: Users },
-    { name: "Analytics", path: "/dashboard", icon: BarChart3 },
+    { name: "Projects", path: "/projects", icon: FolderKanban },
+    { name: "Team", path: "/team", icon: Users },
+    { name: "Analytics", path: "/analytics", icon: BarChart3 },
     { name: "Settings", path: "/settings", icon: Settings },
   ];
 
@@ -91,8 +91,8 @@ const Sidebar = ({ isOpen, setIsOpen, isCollapsed }) => {
         <nav className={`flex-1 space-y-1 overflow-y-auto custom-scrollbar ${isCollapsed ? "px-2.5" : "px-3"}`}>
           {navItems.map((item) => {
             const isActive =
-              location.pathname === item.path &&
-              (item.path !== "/dashboard" || item.name === "Dashboard");
+              location.pathname === item.path ||
+              (item.path !== "/dashboard" && location.pathname.startsWith(`${item.path}/`));
             const Icon = item.icon;
             return (
               <Link

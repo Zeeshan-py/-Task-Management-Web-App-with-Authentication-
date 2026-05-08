@@ -12,7 +12,7 @@ const taskRoutes = require("./routes/taskRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 5000;
 const HOST = "0.0.0.0";
 let server;
 let isShuttingDown = false;

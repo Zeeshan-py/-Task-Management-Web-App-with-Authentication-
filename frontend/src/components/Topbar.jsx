@@ -1,20 +1,29 @@
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Bell,
   ChevronsLeftRightEllipsis,
   LayoutGrid,
+  LogOut,
   Menu,
   Plus,
   Search,
+  Settings,
+  User,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Topbar = ({ onMenuClick, isSidebarCollapsed, onToggleSidebarCollapse }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const userInitial = user?.name?.trim()?.charAt(0)?.toUpperCase() || "U";
   const openCreateTask = () => {
     window.dispatchEvent(new CustomEvent("taskflow:create-task"));
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -75,9 +84,46 @@ const Topbar = ({ onMenuClick, isSidebarCollapsed, onToggleSidebarCollapse }) =>
 
         {/* User Profile */}
         {user ? (
-          <Link to="/profile" className="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border border-indigo-100 cursor-pointer shadow-sm hover:ring-2 hover:ring-indigo-500/30 transition-all shrink-0 ml-1 bg-gradient-to-br from-indigo-100 to-fuchsia-100 text-indigo-700 flex items-center justify-center font-semibold text-sm">
-             <span>{userInitial}</span>
-          </Link>
+          <div className="relative shrink-0 ml-1 group">
+            <Link
+              to="/profile"
+              className="w-8 h-8 md:w-9 md:h-9 rounded-full overflow-hidden border border-slate-200 cursor-pointer shadow-sm hover:ring-2 hover:ring-slate-300 transition-all bg-amber-100 text-slate-950 flex items-center justify-center font-bold text-sm"
+              aria-label="Open profile"
+            >
+              <span>{userInitial}</span>
+            </Link>
+
+            <div className="hidden group-hover:block group-focus-within:block absolute right-0 top-9 pt-2 w-64 z-50">
+            <div className="rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 p-2">
+              <div className="px-3 py-2.5 border-b border-slate-100">
+                <p className="text-sm font-semibold text-slate-950 truncate">{user.name}</p>
+                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+              </div>
+              <Link
+                to="/profile"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+              >
+                <User className="w-4 h-4 text-slate-400" />
+                My Profile
+              </Link>
+              <Link
+                to="/settings"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 rounded-lg"
+              >
+                <Settings className="w-4 h-4 text-slate-400" />
+                Settings
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg"
+              >
+                <LogOut className="w-4 h-4" />
+                Log out
+              </button>
+            </div>
+            </div>
+          </div>
         ) : (
           <Link to="/login" className="text-[13px] font-medium text-slate-600 hover:text-slate-900 shrink-0 ml-1">Login</Link>
         )}

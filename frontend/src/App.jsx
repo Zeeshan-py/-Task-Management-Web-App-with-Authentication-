@@ -13,6 +13,9 @@ import DashboardLayout from "./components/DashboardLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import Analytics from "./pages/Analytics";
+import Team from "./pages/Team";
 import TaskDetails from "./pages/TaskDetails";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -62,6 +65,36 @@ const App = () => {
           }
         />
         <Route
+          path="/projects"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Projects />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Team />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Analytics />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/task/:id"
           element={
             <ProtectedRoute>
@@ -82,6 +115,16 @@ const App = () => {
           }
         />
         <Route
+          path="/profile/:section"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <Profile />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/settings"
           element={
             <ProtectedRoute>
@@ -92,8 +135,8 @@ const App = () => {
           }
         />
 
-        {/* Default: redirect to login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Default: open the protected dashboard, which redirects guests to login */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

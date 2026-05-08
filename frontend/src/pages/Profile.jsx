@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Award, ChartNoAxesCombined, CheckCircle2, Sparkles } from "lucide-react";
+import { Award, ChartNoAxesCombined, CheckCircle2, LogOut, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Profile = () => {
+  const { section = "overview" } = useParams();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const firstName = user?.name || "Workspace User";
+
   // Generate dummy heatmap data (7 rows, approx 20 cols)
   const heatmapData = Array.from({ length: 140 }).map((_, i) => {
     const value = (Math.sin(i * 0.37) + 1) / 2;
@@ -12,6 +18,22 @@ const Profile = () => {
     if (value > 0.2) return 'bg-[#c7d2fe]';
     return 'bg-[#F1F5F9]';
   });
+
+  const tabs = [
+    { label: "Overview", path: "/profile", key: "overview", icon: UserRound },
+    { label: "Activity", path: "/profile/activity", key: "activity", icon: ChartNoAxesCombined },
+    { label: "Badges", path: "/profile/badges", key: "badges", icon: Award },
+    { label: "Security", path: "/profile/security", key: "security", icon: ShieldCheck },
+  ];
+
+  const activeSection = ["overview", "activity", "badges", "security"].includes(section)
+    ? section
+    : "overview";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="max-w-[1200px] mx-auto pb-12 space-y-6">
@@ -24,11 +46,19 @@ const Profile = () => {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/90 backdrop-blur border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col sm:flex-row items-center sm:items-start gap-6 relative"
       >
-        <div className="absolute right-4 top-4 md:right-6 md:top-6">
+        <div className="absolute right-4 top-4 md:right-6 md:top-6 flex items-center gap-2">
           <Link to="/settings" className="px-3 md:px-4 py-2 bg-white border border-slate-200 text-slate-700 font-medium text-[13px] rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2 shadow-sm">
             <Sparkles className="w-4 h-4 text-slate-400" />
             <span className="hidden sm:inline">Edit Profile</span>
           </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="px-3 md:px-4 py-2 bg-red-50 border border-red-100 text-red-600 font-semibold text-[13px] rounded-lg hover:bg-red-100 transition-all flex items-center gap-2 shadow-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden sm:inline">Logout</span>
+          </button>
         </div>
 
         <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border border-slate-200 shadow-sm shrink-0">
@@ -36,8 +66,8 @@ const Profile = () => {
         </div>
 
         <div className="flex-1 text-center sm:text-left mt-1">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Elena Rostova</h1>
-          <p className="text-[15px] font-medium text-indigo-600 mt-0.5 mb-3">VP of Engineering</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">{firstName}</h1>
+          <p className="text-[15px] font-medium text-indigo-600 mt-0.5 mb-3">{user?.email || "Productivity Workspace"}</p>
           
           <div className="flex flex-wrap justify-center sm:justify-start gap-2.5">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium rounded-md">
@@ -52,10 +82,85 @@ const Profile = () => {
         </div>
       </motion.div>
 
+      <nav className="rounded-xl border border-slate-200 bg-white p-2 shadow-sm flex gap-2 overflow-x-auto">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeSection === tab.key;
+          return (
+            <Link
+              key={tab.key}
+              to={tab.path}
+              className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold whitespace-nowrap transition-colors ${
+                isActive
+                  ? "bg-slate-950 text-white"
+                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+              }`}
+            >
+              <Icon className="w-4 h-4" />
+              {tab.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {activeSection === "activity" && (
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-950">Recent Activity</h2>
+          <div className="mt-5 space-y-4">
+            {["Moved Brand Refresh to Review", "Created Mobile Onboarding checklist", "Updated workspace notification settings"].map((item, index) => (
+              <div key={item} className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3">
+                <span className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">{index + 1}</span>
+                <div>
+                  <p className="text-sm font-semibold text-slate-800">{item}</p>
+                  <p className="text-xs text-slate-500">{index + 1} day{index ? "s" : ""} ago</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {activeSection === "badges" && (
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-950">Badges</h2>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {["Project Lead", "Early Adopter", "Focus Streak"].map((badge) => (
+              <div key={badge} className="rounded-xl border border-slate-200 p-4">
+                <Award className="w-6 h-6 text-amber-500" />
+                <h3 className="mt-3 text-sm font-bold text-slate-950">{badge}</h3>
+                <p className="mt-1 text-xs text-slate-500">Unlocked through consistent workspace progress.</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {activeSection === "security" && (
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-950">Security</h2>
+          <div className="mt-5 space-y-3">
+            <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Password sign in</p>
+                <p className="text-xs text-slate-500">Protected by JWT session tokens.</p>
+              </div>
+              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-md px-2 py-1">Active</span>
+            </div>
+            <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Social login</p>
+                <p className="text-xs text-slate-500">Google and GitHub are available when provider keys are configured.</p>
+              </div>
+              <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-100 rounded-md px-2 py-1">Ready</span>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ------------------------------------------
           STATS ROW
           ------------------------------------------ */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {activeSection === "overview" && <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         {/* Stat 1 */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
@@ -101,12 +206,12 @@ const Profile = () => {
           </div>
         </div>
 
-      </div>
+      </div>}
 
       {/* ------------------------------------------
           MAIN CONTENT (2 Columns)
           ------------------------------------------ */}
-      <div className="flex flex-col lg:flex-row gap-4">
+      {activeSection === "overview" && <div className="flex flex-col lg:flex-row gap-4">
         
         {/* LEFT COLUMN - Heatmap */}
         <div className="flex-1 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm overflow-hidden">
@@ -199,7 +304,7 @@ const Profile = () => {
           </button>
         </div>
 
-      </div>
+      </div>}
 
     </div>
   );

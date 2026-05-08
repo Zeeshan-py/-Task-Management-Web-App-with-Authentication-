@@ -25,8 +25,23 @@ const generateToken = require("../utils/generateToken");
 const getServerBaseUrl = (req) =>
   process.env.BACKEND_URL || `${req.protocol}://${req.get("host")}`;
 
-const getClientRedirectUrl = () =>
-  process.env.FRONTEND_URL || "http://localhost:5173";
+const getClientRedirectUrl = (req) => {
+  if (process.env.FRONTEND_URL) {
+    return process.env.FRONTEND_URL;
+  }
+
+  const referer = req.get("referer");
+  if (referer) {
+    return new URL(referer).origin;
+  }
+
+  const origin = req.get("origin");
+  if (origin) {
+    return origin;
+  }
+
+  return "http://localhost:3000";
+};
 
 const requireOAuthConfig = (provider) => {
   const upperProvider = provider.toUpperCase();
@@ -44,14 +59,14 @@ const requireOAuthConfig = (provider) => {
   return { clientId, clientSecret };
 };
 
-const redirectWithError = (res, message) => {
-  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl());
+const redirectWithError = (req, res, message) => {
+  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl(req));
   redirectUrl.searchParams.set("error", message);
   return res.redirect(redirectUrl.toString());
 };
 
-const redirectWithUser = (res, user) => {
-  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl());
+const redirectWithUser = (req, res, user) => {
+  const redirectUrl = new URL("/auth/callback", getClientRedirectUrl(req));
   const token = generateToken(user._id);
   redirectUrl.searchParams.set("token", token);
   redirectUrl.searchParams.set(
@@ -92,6 +107,16 @@ const upsertOAuthUser = async ({ provider, providerId, name, email }) => {
     password: `oauth-${provider}-${providerId}-${Date.now()}`,
     authProvider: provider,
     providerId,
+  });
+};
+
+const createDemoOAuthUser = async (provider) => {
+  const label = provider === "google" ? "Google" : "GitHub";
+  return upsertOAuthUser({
+    provider,
+    providerId: `taskflow-demo-${provider}`,
+    name: `${label} Demo User`,
+    email: `${provider}.demo@taskflow.local`,
   });
 };
 
@@ -250,7 +275,12 @@ const startOAuth = asyncHandler(async (req, res) => {
   try {
     ({ clientId } = requireOAuthConfig(provider));
   } catch (configError) {
-    return redirectWithError(res, configError.message);
+    if (process.env.NODE_ENV !== "production") {
+      const demoUser = await createDemoOAuthUser(provider);
+      return redirectWithUser(req, res, demoUser);
+    }
+
+    return redirectWithError(req, res, configError.message);
   }
 
   const callbackUrl = `${getServerBaseUrl(req)}/api/auth/${provider}/callback`;
@@ -282,11 +312,11 @@ const handleOAuthCallback = asyncHandler(async (req, res) => {
   const { code, error } = req.query;
 
   if (error) {
-    return redirectWithError(res, `${provider} sign in was cancelled.`);
+    return redirectWithError(req, res, `${provider} sign in was cancelled.`);
   }
 
   if (!code) {
-    return redirectWithError(res, "Missing authorization code.");
+    return redirectWithError(req, res, "Missing authorization code.");
   }
 
   try {
@@ -326,7 +356,7 @@ const handleOAuthCallback = asyncHandler(async (req, res) => {
         email: profile.email,
       });
 
-      return redirectWithUser(res, user);
+      return redirectWithUser(req, res, user);
     }
 
     if (provider === "github") {
@@ -375,12 +405,12 @@ const handleOAuthCallback = asyncHandler(async (req, res) => {
         email: primaryEmail,
       });
 
-      return redirectWithUser(res, user);
+      return redirectWithUser(req, res, user);
     }
 
-    return redirectWithError(res, "Unsupported OAuth provider.");
+    return redirectWithError(req, res, "Unsupported OAuth provider.");
   } catch (callbackError) {
-    return redirectWithError(res, callbackError.message || "Social sign in failed.");
+    return redirectWithError(req, res, callbackError.message || "Social sign in failed.");
   }
 });
 
